@@ -403,7 +403,15 @@ def workhorse(
                         "seasonNumber": str(sonarr_next_season["seasonNumber"]),
                     }
 
-                    # actully order sonarr to check
+                    # order sonarr to monitor
+                    monitor(
+                        SONARR_URL,
+                        SONARR_API_KEY,
+                        requestBody["seriesId"],
+                        requestBody["seasonNumber"],
+                    )
+
+                    # actully order sonarr to download items
                     sonarr_command_result = sonarrDownloadOrder(
                         SONARR_URL, SONARR_API_KEY, requestBody
                     )
@@ -495,6 +503,7 @@ def plexAccountWorker(
         else:
             print("Failed to Access", currentAccountNice, "'s Account")
             print(printLine)
+
     return plex
 
 

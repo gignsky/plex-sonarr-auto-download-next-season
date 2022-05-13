@@ -460,6 +460,7 @@ def workhorse(
 
                 requestBody = False
                 if DOWNLOAD_TARGET == "FULL_SEASON":
+
                     print(
                         "     Instructing Sonarr to Monitor & Download the next season."
                     )
@@ -478,7 +479,8 @@ def workhorse(
                         sonarr_show["id"],
                         str(sonarr_next_season["seasonNumber"]),
                     )
-                    # actully order sonarr to check
+
+                    # actully order sonarr to download items
                     sonarr_command_result = sonarrDownloadOrder(
                         SONARR_URL, SONARR_API_KEY, requestBody
                     )
