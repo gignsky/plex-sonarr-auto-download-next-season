@@ -18,3 +18,18 @@ Python Script will fail to access a users account if a space appears in their na
     **NOTE**
       -If season that download command references is marked as "UNMONITORED" then sonarr will search for the season but fail to send the order to your download client
         -This is one of the issues the a PRODUCTION VERSION aims to fix. (See. production/withMonitorFunction)
+
+  # PRODUCTION VERSIONS - Python Only (Might convert to docker eventually)
+    (See. production/)
+
+    # NO_MONITOR FUNCTION - VERSION
+      (See. noMonitorFunction/)
+
+      -The NO MONITOR VERSION works similarly to the ORIGINAL VERSION in terms of the neccecity for sonarr to already be monitoring both the show and season that the script will inevitablly call upon.
+      -This version however has the ability to handle more user accounts than just the server owner.
+
+    # The PRODUCTION VERSIONS have two variations each.
+      1. Manual - Intended to be run manually and allows the user to select which user they wish to apply the script to; this can be any user with access to the configured Plex server.
+        (See. "manualUserSelectionAutoDownload.py" OR "noMonitor_manualUserSelectionAutoDownload.py" depending on selected usecase)
+      2. Automatic - Intended to be run either manually or with a crontab job for automatic processing.
+        (See. "noMonitor_PlexSonarrAutoDownloader.py" OR "PlexSonarrAutoDownloader.py" depending on selected usecase)
