@@ -1,0 +1,11 @@
+# THERE IS NO REASON TO CRONTAB MANUAL USER SELCTION SCRIPTS AS THEY REQUIRE USER INPUT IN THE BEGINNING STAGES,
+# AT SOME PONT A CONFIGURATION FILE COULD BE ADDED WHICH WOULD ALLOW SPECIFIC USERS SELECTION ON A MULTI-USER SERVER THAT WOULD
+# ENABLE THOSE USERS ALONE TO BE SELECTED FOR AUTO-UPDATE
+
+# No Monitor - AUTO
+# run python script every 30 minutes
+*/30 * * * * /usr/bin/python3 /APPLICATION_DIRECTORY/noMonitor_PlexSonarrAutoDownloader.py > /proc/1/fd/1 2>/proc/1/fd/2
+
+# With Monitor - AUTO
+# run python script every 30 minutes
+*/30 * * * * /usr/bin/python3 /APPLICATION_DIRECTORY/withMonitor_PlexSonarrAutoDownloader.py > /proc/1/fd/1 2>/proc/1/fd/2
