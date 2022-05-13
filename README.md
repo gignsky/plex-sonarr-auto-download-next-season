@@ -18,6 +18,7 @@ Python Script will fail to access a users account if a space appears in their na
     **NOTE**
       -If season that download command references is marked as "UNMONITORED" then sonarr will search for the season but fail to send the order to your download client
         -This is one of the issues the a PRODUCTION VERSION aims to fix. (See. production/withMonitorFunction)
+<<<<<<< HEAD
 
   # PRODUCTION VERSIONS - Python Only (Might convert to docker eventually)
     (See. production/)
@@ -33,3 +34,5 @@ Python Script will fail to access a users account if a space appears in their na
         (See. "manualUserSelectionAutoDownload.py" OR "noMonitor_manualUserSelectionAutoDownload.py" depending on selected usecase)
       2. Automatic - Intended to be run either manually or with a crontab job for automatic processing.
         (See. "noMonitor_PlexSonarrAutoDownloader.py" OR "PlexSonarrAutoDownloader.py" depending on selected usecase)
+=======
+>>>>>>> v2.0-No-Monitoring
