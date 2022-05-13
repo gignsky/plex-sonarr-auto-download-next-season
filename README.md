@@ -1,21 +1,35 @@
+# PURPOSE
 PlexSonarrAutoDownloader is a script that connects to Plex and Sonarr to automatically
 download the next season of a show you are watching based on the episode you are on.
 
-It has been tested on a local environment with two active plex users, so your mileage may vary on larger installs.
+# VERSION DETAILS
+**NOTE**
+Python Script will fail to access a users account if a space appears in their name. Should Fix Later.
 
-The script can be installed in two ways: Via Docker or just as a plain Python script with cron.
+  # ORIGINAL VERSION
+    (See. originalScript/docker-PlexSonarrAutoDownloader/)
 
-Docker install:
-1. cd into the folder of the script.
-2. Open the script and adjust the variables to your setup (Plex URL, Token, Sonarr URL, Token)
-3. In a terminal, type docker build . to build the docker container. At the end of the process, Docker will tell you the tag
-  it has given to the resulting image.
-4. In the same terminal, type docker run [NAME OF CONTAINER IMAGE HERE]
-  *(without [])
+    -The original version works for the plex server owner account.
+    -The script will scan the plex server owner's in-progress tv shows and compare to a list of TV Shows grabbed from Soanrr.
+      -If a show has less than the EPISODE_THRESHOLD the script will check to see if a next season exists and if any episodes are already downloaded from that season.
+        -If the season exists and no episodes are downloaded the script will send a download command to sonarr.
+    -Python build can run automatically with crontab (See. originalScript/crontab - examples.txt)
 
-Python install
-1. Copy the script anywhere you like. Be aware that their might be some permission issues with cron depending on where you put it.
-2. Open the script and adjust the variables to your setup (Plex URL, Token, Sonarr URL, Token)
-3. In a terminal, type crontab -e to add the script to cron and run it periodically
-    You can take some inspiration from the crontab file that comes with the script for the docker container.
-    Do however check if the path to your python executable is the same. You can do so by typing 'which python' or 'which python3' in a terminal.
+    **NOTE**
+      -If season that download command references is marked as "UNMONITORED" then sonarr will search for the season but fail to send the order to your download client
+        -This is one of the issues the a PRODUCTION VERSION aims to fix. (See. production/withMonitorFunction)
+
+  # PRODUCTION VERSIONS - Python Only (Might convert to docker eventually)
+    (See. production/)
+
+    # NO_MONITOR FUNCTION - VERSION
+      (See. noMonitorFunction/)
+
+      -The NO MONITOR VERSION works similarly to the ORIGINAL VERSION in terms of the neccecity for sonarr to already be monitoring both the show and season that the script will inevitablly call upon.
+      -This version however has the ability to handle more user accounts than just the server owner.
+
+    # The PRODUCTION VERSIONS have two variations each.
+      1. Manual - Intended to be run manually and allows the user to select which user they wish to apply the script to; this can be any user with access to the configured Plex server.
+        (See. "manualUserSelectionAutoDownload.py" OR "noMonitor_manualUserSelectionAutoDownload.py" depending on selected usecase)
+      2. Automatic - Intended to be run either manually or with a crontab job for automatic processing.
+        (See. "noMonitor_PlexSonarrAutoDownloader.py" OR "PlexSonarrAutoDownloader.py" depending on selected usecase)
