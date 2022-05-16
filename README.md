@@ -62,7 +62,7 @@ Python Script will fail to access a users account if a space appears in their na
 
   Python install
   1. Copy the script version you have decided to run anywhere you like. Be aware that their might be some permission issues with cron depending on where you put it.
-  2. Open the script and adjust the variables to your setup (See. #CONFIGURATION section at top of script)
+  2. Open the script and adjust the variables to your setup (See. config.py in root project directory)
   3. Note that different versions have different python dependencies, (See. "requiredDependancies.txt") for a single line that you can run to install required dependencies based on selected versions.
   4. In a terminal, type crontab -e to add the script to cron and run it periodically
     (See. "crontab - examples.txt")
