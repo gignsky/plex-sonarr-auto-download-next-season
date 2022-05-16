@@ -1,3 +1,6 @@
+# JOIN THE DISCORD FOR THE MOST ACTIVE DISUSSION AND DEVELOPMENT:
+https://discord.gg/vSRz2DRGjr
+
 # PURPOSE
 PlexSonarrAutoDownloader is a script that connects to Plex and Sonarr to automatically
 download the next season of a show you are watching based on the episode you are on.
