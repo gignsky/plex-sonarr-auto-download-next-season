@@ -12,6 +12,7 @@ download the next season of a show you are watching based on the episode you are
 Python Script will fail to access a users account if a space appears in their name. Should Fix Later.
 
   # ORIGINAL VERSION
+    https://github.com/PeacefulDreams/NewEpisodeDownloader
     (See. originalScript/docker-PlexSonarrAutoDownloader/)
 
     -The original version works for the plex server owner account.
