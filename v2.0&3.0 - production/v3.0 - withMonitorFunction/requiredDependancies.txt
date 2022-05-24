@@ -1,5 +1,0 @@
-python3 -m pip install requests plexapi
-
-
-#only install arrapi if you decided to turn on season monitoring setting in monitorMaster.py
-python3 -m pip install arrapi

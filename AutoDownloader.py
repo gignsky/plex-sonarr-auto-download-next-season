@@ -1,5 +1,5 @@
-# gignsky 5.8.22 - PERSONAL - MANUAL - NO MONITOR FUNCTION
-# manual user selection version of script that allows for scanning plex for in-progress shows and requesting sonarr monitor and download the next season if the next season is not already downloaded or doesn't have any episodes downloaded already.
+# gignsky 5.8.22 - TEMPLATE - AUTO - WITH MONITOR FUNCTION
+# automatic version of script that allows for scanning plex for in-progress shows from all plex.server users and requesting sonarr monitor and download the next season if the next season is not already downloaded or doesn't have any episodes downloaded already.
 
 """
 USEAGE
@@ -7,9 +7,11 @@ USEAGE
 2. Locate #START HERE
 3. Input plex and sonarr URL's and API Credentials
 4. Configure EPISODE_THRESHOLD with desired integer
-5. Make NOTE of "test-mode" an option that will appear at the beginning of running this script if you select to enable test-mode the script will run as normal with the exception of the line that send the download command to sonarr. This should be used when you wish to query your library to see what will be downloaded upon running this script outside of test-mode.
+5. Make NOTE of "test-mode" an option that will appear at the beginning of running the "manualUserSelection" Versions of this script if you select to enable test-mode the script will run as normal with the exception of the line that send the download command to sonarr. This should be used when you wish to query your library to see what will be downloaded upon running this script outside of test-mode.
 
-    NOTE Running this script in "test-mode" will additionally disable the scripts ability to set seasons and episodes to "monitored" status
+    NOTE "test-mode" was not included in this script in order for the ability to run this script on all users via the use of crontab
+
+    NOTE If you wish to run "test-mode" on all users please refer to the manual version of this script and select the option titled ALL; this will allow testing of this script without the trouble of having to modify this script.
 
 NOTE *** This should work fine if you enter an external URL in the boxes below but service was tested with all devices running on an internal network with hardcoded LAN IP addresses
  """
@@ -33,7 +35,6 @@ def initialConfigs():
     DOWNLOAD_TARGET = "FULL_SEASON"
 
     # START HERE
-
     # Determines how many episodes before the end of the season a new season should be downloaded.
     EPISODE_THRESHOLD = 2
 
@@ -62,9 +63,6 @@ def main():
     # define printline
     printLine = "============================================="
 
-    # prompt for test-mode
-    test_mode = testmode(printLine)
-
     # import vars from initial configs
     (
         LOG_LEVEL,
@@ -85,19 +83,23 @@ def main():
     # grab all plex accounts in list
     allAccounts = allAccountsFinder(plex)
 
-    # index position for i when user selects ALL
-    allIndex = len(allAccounts)
+    # Check Plex for watched shows that are nearing the end of the season
 
-    # Select User
-    x = userSelect(allAccounts, printLine, allIndex)
+    x = 0
+    totaliteration = len(allAccounts)
 
-    if x == allIndex:
-        stopper = 0
-        x = 0
-        z = 0
+    while x != totaliteration:
+        plex, account = grabPlexDetails(PLEX_URL, PLEX_TOKEN)
+
+        # define printline
+        printLine = "============================================="
+
+        currentAccountOriginal = allAccounts[x]  # set current account
+        print(currentAccountOriginal)
+        currentAccountNice = currentAccountOriginal.capitalize()
+
         if x == 0:
-            currentAccountOriginal = allAccounts[x]
-            currentAccountNice = currentAccountOriginal.capitalize()
+            currentAccountNice = currentAccountOriginal
             print(printLine)
             print("Now Working on " + currentAccountNice + "'s Current Series")
             print(printLine)
@@ -109,20 +111,18 @@ def main():
                 SONARR_API_KEY,
                 sonarr_shows,
                 plex,
-                test_mode,
             )
             print(printLine)
+        else:
+            print(printLine)
+            print("Now Working on " + currentAccountNice + "'s Current Series")
+            print(printLine)
 
-        while stopper != 1:
-            for x in allAccounts:
-                # Check Plex for watched shows that are nearing the end of the season
-                currentAccountOriginal = x  # set current account
-                # print(currentAccountOriginal)
-                currentAccountNice = currentAccountOriginal.capitalize()
+            plex = tryPlexUser(currentAccountOriginal, plex)  # switch plex user
 
-                plexAccountWorker(
-                    printLine,
-                    test_mode,
+            # break upon user failing
+            if plex != "failed":
+                workhorse(
                     EPISODE_THRESHOLD,
                     DOWNLOAD_TARGET,
                     PLEX_TV_SHOWS_LIBRARY,
@@ -130,82 +130,16 @@ def main():
                     SONARR_API_KEY,
                     sonarr_shows,
                     plex,
-                    x,
-                    currentAccountOriginal,
-                    currentAccountNice,
                 )
-                z = z + 1
-
-                # increment until last account
-                if z == len(allAccounts):
-                    stopper = 1
-
-    else:
-        # Check Plex for watched shows that are nearing the end of the season
-        currentAccountOriginal = allAccounts[x]  # set current account
-        # print(currentAccountOriginal)
-        currentAccountNice = currentAccountOriginal.capitalize()
-
-        plexAccountWorker(
-            printLine,
-            test_mode,
-            EPISODE_THRESHOLD,
-            DOWNLOAD_TARGET,
-            PLEX_TV_SHOWS_LIBRARY,
-            SONARR_URL,
-            SONARR_API_KEY,
-            sonarr_shows,
-            plex,
-            x,
-            currentAccountOriginal,
-            currentAccountNice,
-        )
-
+                print(printLine)
+            else:
+                print("Failed to Access", currentAccountNice, "'s Account")
+                print(printLine)
+        x = x + 1
     now = datetime.now()
     print("Finished at: ")
     print(now)
     print(printLine)
-
-
-def testmode(printLine):
-    """Determine if user wishes to run in test-mode
-
-
-    Returns:
-        Bool with true=yes to test mode
-    """
-    q = 0
-    while q != 1:
-        # init prompt
-        print(printLine)
-        print("Would you like to disable downloads and enable 'test-mode'?")
-        print(printLine)
-
-        # actual prompt
-        userInput = input("(Y/N)")
-
-        # check user selection
-        userInput = userInput.upper()
-
-        if userInput == "Y":
-            q = 1
-            return bool(1)
-        elif userInput == "N":
-            q = 1
-            return bool(0)
-        elif userInput == "YES":
-            q = 1
-            return bool(1)
-        elif userInput == "NO":
-            q = 1
-            return bool(0)
-        else:
-            print(printLine)
-            print(
-                "Appologies, the entered text must be either 'Y', 'N', 'Yes', or 'No'"
-            )
-            print("Please try again!")
-            print(printLine)
 
 
 def userSelect(allAccounts, printLine, allIndex):
@@ -324,7 +258,6 @@ def workhorse(
     SONARR_API_KEY,
     sonarr_shows,
     plex,
-    test_mode,
 ):
     """Primary Workthread that does the heavy lifting in terms of actually selecting and downloading episodes
 
@@ -470,29 +403,20 @@ def workhorse(
                         "seasonNumber": str(sonarr_next_season["seasonNumber"]),
                     }
 
-                # check test-mode on/off?
-                if test_mode == bool(0):
                     # order sonarr to monitor
                     monitor(
                         SONARR_URL,
                         SONARR_API_KEY,
-                        sonarr_show["id"],
-                        str(sonarr_next_season["seasonNumber"]),
+                        requestBody["seriesId"],
+                        requestBody["seasonNumber"],
                     )
 
                     # actully order sonarr to download items
                     sonarr_command_result = sonarrDownloadOrder(
                         SONARR_URL, SONARR_API_KEY, requestBody
                     )
-                elif test_mode == bool(1):
-                    sonarr_command_result = 99  # 99 is error code to list that test-mode is on note elif command a few lines down
 
-                # check command status
-                if sonarr_command_result == 99:
-                    print(
-                        "Test-mode turned on if it were turned off command be SUCCESSFUL"
-                    )
-                elif sonarr_command_result.status_code == 201:
+                if sonarr_command_result.status_code == 201:
                     # print("test", sonarr_command_result.json()) #XXXX commented out for purposes of cleaning up console readout
                     print("Request Sent -- SUCCESSFULLY")
 
@@ -531,7 +455,6 @@ def plex_show_tvdb_CHECKER(plex_show):
 
 def plexAccountWorker(
     printLine,
-    test_mode,
     EPISODE_THRESHOLD,
     DOWNLOAD_TARGET,
     PLEX_TV_SHOWS_LIBRARY,
@@ -556,7 +479,6 @@ def plexAccountWorker(
             SONARR_API_KEY,
             sonarr_shows,
             plex,
-            test_mode,
         )
         print(printLine)
     else:  # all other accounts
@@ -576,7 +498,6 @@ def plexAccountWorker(
                 SONARR_API_KEY,
                 sonarr_shows,
                 plex,
-                test_mode,
             )
             print(printLine)
         else:

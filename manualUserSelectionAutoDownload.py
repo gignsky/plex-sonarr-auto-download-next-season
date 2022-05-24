@@ -1,4 +1,4 @@
-# TEMPLATE - MANUAL - NO MONITOR FUNCTION
+# gignsky 5.8.22 - PERSONAL - MANUAL - WITH MONITOR FUNCTION
 # manual user selection version of script that allows for scanning plex for in-progress shows and requesting sonarr monitor and download the next season if the next season is not already downloaded or doesn't have any episodes downloaded already.
 
 """
@@ -9,6 +9,7 @@ USEAGE
 4. Configure EPISODE_THRESHOLD with desired integer
 5. Make NOTE of "test-mode" an option that will appear at the beginning of running this script if you select to enable test-mode the script will run as normal with the exception of the line that send the download command to sonarr. This should be used when you wish to query your library to see what will be downloaded upon running this script outside of test-mode.
 
+    NOTE Running this script in "test-mode" will additionally disable the scripts ability to set seasons and episodes to "monitored" status
 
 NOTE *** This should work fine if you enter an external URL in the boxes below but service was tested with all devices running on an internal network with hardcoded LAN IP addresses
  """
@@ -17,6 +18,7 @@ from datetime import datetime
 import requests
 from plexapi.server import PlexServer
 from plexapi.exceptions import NotFound
+from monitorFunctions.monitorMaster import main as monitor
 
 
 def initialConfigs():
@@ -458,7 +460,10 @@ def workhorse(
 
                 requestBody = False
                 if DOWNLOAD_TARGET == "FULL_SEASON":
-                    print("     Instructing Sonarr to download the next season.")
+
+                    print(
+                        "     Instructing Sonarr to Monitor & Download the next season."
+                    )
                     requestBody = {
                         "name": "SeasonSearch",
                         "seriesId": sonarr_show["id"],
@@ -467,11 +472,17 @@ def workhorse(
 
                 # check test-mode on/off?
                 if test_mode == bool(0):
-                    # actully order sonarr to check
-                    sonarr_command_result = requests.post(
-                        SONARR_URL + "/api/command?apiKey=" + SONARR_API_KEY,
-                        None,
-                        requestBody,
+                    # order sonarr to monitor
+                    monitor(
+                        SONARR_URL,
+                        SONARR_API_KEY,
+                        sonarr_show["id"],
+                        str(sonarr_next_season["seasonNumber"]),
+                    )
+
+                    # actully order sonarr to download items
+                    sonarr_command_result = sonarrDownloadOrder(
+                        SONARR_URL, SONARR_API_KEY, requestBody
                     )
                 elif test_mode == bool(1):
                     sonarr_command_result = 99  # 99 is error code to list that test-mode is on note elif command a few lines down
@@ -497,6 +508,13 @@ def workhorse(
                 continue
     else:
         print("NO in progress TV shows found.")
+
+
+def sonarrDownloadOrder(SONARR_URL, SONARR_API_KEY, requestBody):
+    sonarr_command_result = requests.post(
+        SONARR_URL + "/api/command?apiKey=" + SONARR_API_KEY, None, requestBody
+    )
+    return sonarr_command_result
 
 
 def plex_show_tvdb_CHECKER(plex_show):
