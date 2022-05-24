@@ -1,5 +1,0 @@
-#if you don't have pip
-sudo apt install python3-pip
-
-#neccecary
-python3 -m pip install requests plexapi
