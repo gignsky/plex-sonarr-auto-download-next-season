@@ -1,4 +1,4 @@
-# gignsky 5.8.22 - TEMPLATE - AUTO - NO MONITOR FUNCTION
+# gignsky 5.8.22 - TEMPLATE - AUTO - WITH MONITOR FUNCTION
 # automatic version of script that allows for scanning plex for in-progress shows from all plex.server users and requesting sonarr monitor and download the next season if the next season is not already downloaded or doesn't have any episodes downloaded already.
 
 """
