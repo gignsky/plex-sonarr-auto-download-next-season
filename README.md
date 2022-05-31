@@ -1,3 +1,5 @@
+# Current Version: V3.1
+
 # JOIN THE DISCORD FOR THE MOST ACTIVE DISUSSION AND DEVELOPMENT:
 https://discord.gg/vSRz2DRGjr
 
