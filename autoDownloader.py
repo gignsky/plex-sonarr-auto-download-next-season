@@ -346,7 +346,7 @@ def workhorse(
                         DOWNLOAD_TARGET,
                     )
                 else:
-                    print("elsed nothing to report")
+                    # print("elsed nothing to report") #was used for testing purposes
                     status = notFirstSeasonChecker(
                         sonarr_show,
                         assumed_sonarr_season_number,
