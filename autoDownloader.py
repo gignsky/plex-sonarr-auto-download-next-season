@@ -332,71 +332,155 @@ def workhorse(
                 print("     Can't match Sonarr Season. SKIPPING...")
                 continue
 
-            try:
-                sonarr_next_season = sonarr_show["seasons"][
-                    int(assumed_sonarr_season_number + 1)
-                ]
-                print(
-                    "     Found a next season on Sonarr. Checking episode availability."
-                )
-            except IndexError:
-                print("     Sonarr indicates that there is no next season. SKIPPING...")
-                continue
-
-            if sonarr_next_season["statistics"]["episodeCount"] >= 1:
-                print(
-                    "     Sonarr indicates the next season has at least one episode available. SKIPPING.."
-                )
-                continue
-
-            episodes_left = abs(
-                sonarr_season["statistics"]["totalEpisodeCount"] - plex_episode.index
-            )
-
-            if episodes_left <= EPISODE_THRESHOLD:
-                print("     Met threshold for downloading new episodes.")
-
-                requestBody = False
-                if DOWNLOAD_TARGET == "FULL_SEASON":
-
+            if assumed_sonarr_season_number == 1:
+                if plex_season.leafCount == 1:
                     print(
-                        "     Instructing Sonarr to Monitor & Download the next season."
+                        f"Current Season downloaded is first season in {plex_show} and inprogress episode is pilot. Downloading remaining episodes in this first season."
                     )
-                    requestBody = {
-                        "name": "SeasonSearch",
-                        "seriesId": sonarr_show["id"],
-                        "seasonNumber": str(sonarr_next_season["seasonNumber"]),
-                    }
-
-                    # order sonarr to monitor
-                    monitor(
+                    sonarr_next_season = sonarr_show["seasons"][1]
+                    downloadNewEpisodes(
+                        sonarr_show,
+                        sonarr_next_season,
                         SONARR_URL,
                         SONARR_API_KEY,
-                        requestBody["seriesId"],
-                        requestBody["seasonNumber"],
+                        DOWNLOAD_TARGET,
                     )
-
-                    # actully order sonarr to download items
-                    sonarr_command_result = sonarrDownloadOrder(
-                        SONARR_URL, SONARR_API_KEY, requestBody
-                    )
-
-                if sonarr_command_result.status_code == 201:
-                    # print("test", sonarr_command_result.json()) #XXXX commented out for purposes of cleaning up console readout
-                    print("Request Sent -- SUCCESSFULLY")
-
                 else:
-                    print(
-                        "     FAILED -- to process command. Received status code "
-                        + str(sonarr_command_result.status_code)
+                    print("elsed nothing to report")
+                    status = notFirstSeasonChecker(
+                        sonarr_show,
+                        assumed_sonarr_season_number,
+                        plex_episode,
+                        EPISODE_THRESHOLD,
+                        sonarr_season,
+                        SONARR_URL,
+                        SONARR_API_KEY,
+                        DOWNLOAD_TARGET,
                     )
-                    continue
+                    if status == "continue":
+                        continue
+                    else:
+                        print("ALL GOOD!")
 
             else:
-                print("     Episode did not meet threshold for downloading. SKIPPING..")
-                continue
+                status = notFirstSeasonChecker(
+                    sonarr_show,
+                    assumed_sonarr_season_number,
+                    plex_episode,
+                    EPISODE_THRESHOLD,
+                    sonarr_season,
+                    SONARR_URL,
+                    SONARR_API_KEY,
+                    DOWNLOAD_TARGET,
+                )
+                if status == "continue":
+                    continue
+                else:
+                    print("ALL GOOD!")
+
     else:
         print("NO in progress TV shows found.")
+
+
+def notFirstSeasonChecker(
+    sonarr_show,
+    assumed_sonarr_season_number,
+    plex_episode,
+    EPISODE_THRESHOLD,
+    sonarr_season,
+    SONARR_URL,
+    SONARR_API_KEY,
+    DOWNLOAD_TARGET,
+):
+    # check next season avaliability
+    try:
+        sonarr_next_season = sonarr_show["seasons"][
+            int(assumed_sonarr_season_number + 1)
+        ]
+        print("     Found a next season on Sonarr. Checking episode availability.")
+    except IndexError:
+        print("     Sonarr indicates that there is no next season. SKIPPING...")
+        status = "continue"
+        return status
+
+    # check next season status
+    if sonarr_next_season["statistics"]["episodeCount"] >= 1:
+        print(
+            "     Sonarr indicates the next season has at least one episode available. SKIPPING.."
+        )
+        status = "continue"
+        return status
+
+    episodes_left = abs(
+        sonarr_season["statistics"]["totalEpisodeCount"] - plex_episode.index
+    )
+
+    if episodes_left <= EPISODE_THRESHOLD:
+        status = downloadNewEpisodes(
+            sonarr_show,
+            sonarr_next_season,
+            SONARR_URL,
+            SONARR_API_KEY,
+            DOWNLOAD_TARGET,
+        )
+        if status == "continue":
+            status = "continue"
+            return status
+        else:
+            print("ALL GOOD!")
+
+    else:
+        print("     Episode did not meet threshold for downloading. SKIPPING..")
+        status = "continue"
+        return status
+
+
+# pre-downloader steps
+def downloadNewEpisodes(
+    sonarr_show,
+    sonarr_next_season,
+    SONARR_URL,
+    SONARR_API_KEY,
+    DOWNLOAD_TARGET,
+):
+
+    print("     Met threshold for downloading new episodes.")
+
+    requestBody = False
+    if DOWNLOAD_TARGET == "FULL_SEASON":
+
+        print("     Instructing Sonarr to Monitor & Download the next season.")
+        requestBody = {
+            "name": "SeasonSearch",
+            "seriesId": sonarr_show["id"],
+            "seasonNumber": str(sonarr_next_season["seasonNumber"]),
+        }
+
+        # order sonarr to monitor
+        monitor(
+            SONARR_URL,
+            SONARR_API_KEY,
+            requestBody["seriesId"],
+            requestBody["seasonNumber"],
+        )
+
+        # actully order sonarr to download items
+        sonarr_command_result = sonarrDownloadOrder(
+            SONARR_URL, SONARR_API_KEY, requestBody
+        )
+
+    elif sonarr_command_result.status_code == 201:
+        # print("test", sonarr_command_result.json()) #XXXX commented out for purposes of cleaning up console readout
+        print("Request Sent -- SUCCESSFULLY")
+        return
+
+    else:
+        print(
+            "     FAILED -- to process command. Received status code "
+            + str(sonarr_command_result.status_code)
+        )
+        status = "continue"
+        return status
 
 
 def sonarrDownloadOrder(SONARR_URL, SONARR_API_KEY, requestBody):
