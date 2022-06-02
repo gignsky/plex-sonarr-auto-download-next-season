@@ -50,7 +50,7 @@ def main():
         x = 0
         z = 0
         if x == 0:
-            currentAccountOriginal = allAccounts[x]
+            currentAccountOriginal = allAccounts[x]  # set current account
             currentAccountNice = currentAccountOriginal.capitalize()
 
             print(PRINTLINE)
