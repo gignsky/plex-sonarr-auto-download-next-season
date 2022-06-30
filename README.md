@@ -13,7 +13,7 @@ download the next season of a show you are watching based on the episode you are
 **NOTE**
 Python Script will fail to access a users account if a space appears in their name. Should Fix Later.
 
-  # ORIGINAL VERSION
+  # ORIGINAL VERSION V0.1
    
    https://github.com/PeacefulDreams/NewEpisodeDownloader
    
@@ -29,16 +29,16 @@ Python Script will fail to access a users account if a space appears in their na
       -If season that download command references is marked as "UNMONITORED" then sonarr will search for the season but fail to send the order to your download client
         -This is one of the issues the a PRODUCTION VERSION aims to fix. (See. production/withMonitorFunction)
 
-  # PRODUCTION VERSIONS - Python Only (Might convert to docker eventually)
+  # PRODUCTION VERSIONS | V0.2 and Above - Python Only (Might convert to docker eventually)
     (See. production/)
 
-    # NO_MONITOR FUNCTION - VERSION
+    # NO_MONITOR FUNCTION - VERSION V0.2
       (See. noMonitorFunction/)
 
       -The NO MONITOR VERSION works similarly to the ORIGINAL VERSION in terms of the neccecity for sonarr to already be monitoring both the show and season that the script will inevitablly call upon.
       -This version however has the ability to handle more user accounts than just the server owner.
 
-    # WITH_MONITOR_FUNCTION - VERSION
+    # WITH_MONITOR_FUNCTION - VERSION V0.3
       (See. withMonitorFunction/)
 
       -The WITH MONITOR VERSION works similarly to the NO MONITOR VERSION with the added addition that it does not require that you keep your sonarr configured to have undownloaded seasons monitored
@@ -80,8 +80,8 @@ Python Script will fail to access a users account if a space appears in their na
 
 # TESTED ON
 
-  # ORIGINAL VERSION
+  # ORIGINAL VERSION V0.1
     The original script was tested on a local environment with two active plex users, so your mileage may vary on larger installs.
 
-  # PRODUCTION VERSIONS
+  # PRODUCTION VERSIONS V0.2 and Above
     Both of the below versions were tested on a LAN enviroment with access available from the outside WAN. 11 total user accounts, 10 of which have consumed some content, but some are MOVIE ONLY watchers and have no interest in television, the script can handle all these exceptions that occur when an account has no in-progress TV Shows.
