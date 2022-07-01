@@ -389,10 +389,12 @@ def workhorse(
                 + str(assumed_sonarr_season_number)
             )
 
+            assumed_sonarr_season_number_KEY = direction_finder(
+                assumed_sonarr_season_number, sonarr_show
+            )
+
             try:
-                sonarr_season = sonarr_show["seasons"][
-                    int(assumed_sonarr_season_number)
-                ]
+                sonarr_season = sonarr_show["seasons"][assumed_sonarr_season_number_KEY]
                 print("     Found current season on Sonarr.")
             except IndexError:
                 print("     Can't match Sonarr Season. SKIPPING...")
@@ -462,10 +464,14 @@ def notFirstSeasonChecker(
     test_mode,
     DOWNLOAD_TARGET,
 ):
+    assumed_sonarr_season_number_KEY_2 = direction_finder(
+        assumed_sonarr_season_number + 1, sonarr_show
+    )
+
     # check next season avaliability
     try:
         sonarr_next_season = sonarr_show["seasons"][
-            int(assumed_sonarr_season_number + 1)
+            int(assumed_sonarr_season_number_KEY_2)
         ]
         print("     Found a next season on Sonarr. Checking episode availability.")
     except IndexError:
@@ -638,6 +644,22 @@ def plexAccountWorker(
             print(printLine)
 
     return plex
+
+
+def direction_finder(assumed_sonarr_season_number, sonarr_show):
+    # legnth=len(sonarr_show["seasons"])
+    #
+    # array_zero_season_number=sonarr_show["seasons"][0]["seasonNumber"]
+    #
+    # if(array_zero_season_number==0):
+    #
+
+    for season_num in sonarr_show["seasons"]:
+        if (
+            sonarr_show["seasons"][season_num]["seasonNumber"]
+            == assumed_sonarr_season_number
+        ):
+            return season_num
 
 
 ########
