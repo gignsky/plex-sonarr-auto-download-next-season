@@ -296,7 +296,7 @@ def workhorse(
         from main()
     """
     try:
-        tvshows = plex.library.section(PLEX_TV_SHOWS_LIBRARY)
+        plex_tvshows = plex.library.section(PLEX_TV_SHOWS_LIBRARY)
         print("Found Library '" + PLEX_TV_SHOWS_LIBRARY + "'")
     except NotFound:
         print("Library with name '" + PLEX_TV_SHOWS_LIBRARY + "' not found.")
@@ -304,7 +304,7 @@ def workhorse(
 
     PlexTVShowsToCheck = {}
 
-    iterate = tvshows.search(None, None, None, "episode", inProgress=True)
+    iterate = plex_tvshows.search(None, None, None, "episode", inProgress=True)
 
     for episode in iterate:
         plex_show = episode.show()
