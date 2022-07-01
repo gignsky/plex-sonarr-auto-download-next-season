@@ -311,21 +311,24 @@ def workhorse(
         # print("plex_show: ", plex_show)
         plex_season = episode.season()
         plex_episode = episode
-        plex_show_tvdb = plex_show_tvdb_CHECKER(plex_show)
+        plex_show_tvdb_ID = plex_show_tvdb_CHECKER(plex_show)
 
         # print("plex_show_tvbd: ", plex_show_tvdb)
         # print("plex_show: " + str(plex_show.guids[2].id))
 
-        if not (plex_show_tvdb in PlexTVShowsToCheck):
-            PlexTVShowsToCheck[plex_show_tvdb] = {
+        if not (plex_show_tvdb_ID in PlexTVShowsToCheck):
+            PlexTVShowsToCheck[plex_show_tvdb_ID] = {
                 "show": plex_show,
                 "season": plex_season,
                 "episode": plex_episode,
             }
         else:
-            if plex_season.index > PlexTVShowsToCheck[plex_show_tvdb]["season"].index:
+            if (
+                plex_season.index
+                > PlexTVShowsToCheck[plex_show_tvdb_ID]["season"].index
+            ):
                 # This episode is from a newer season than the existing one. We want the latest, so overwrite
-                PlexTVShowsToCheck[plex_show_tvdb] = {
+                PlexTVShowsToCheck[plex_show_tvdb_ID] = {
                     "show": plex_show,
                     "season": plex_season,
                     "episode": plex_episode,
@@ -333,14 +336,14 @@ def workhorse(
             else:
                 if (
                     plex_season.index
-                    == PlexTVShowsToCheck[plex_show_tvdb]["season"].index
+                    == PlexTVShowsToCheck[plex_show_tvdb_ID]["season"].index
                 ):
                     if (
                         plex_episode.index
-                        > PlexTVShowsToCheck[plex_show_tvdb]["episode"].index
+                        > PlexTVShowsToCheck[plex_show_tvdb_ID]["episode"].index
                     ):
                         # The episode is from the same season and has a higher number. We want the latest, so overwrite
-                        PlexTVShowsToCheck[plex_show_tvdb] = {
+                        PlexTVShowsToCheck[plex_show_tvdb_ID] = {
                             "show": plex_show,
                             "season": plex_season,
                             "episode": plex_episode,
