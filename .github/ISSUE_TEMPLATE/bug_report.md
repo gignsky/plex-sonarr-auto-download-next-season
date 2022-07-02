@@ -24,9 +24,8 @@ A clear and concise description of what you expected to happen.
 If applicable, add screenshots to help explain your problem.
 
 ** Script System Running Project(please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
+ - OS: [e.g. Linux]
+ - Version [e.g. Ubuntu 20.04 LTS]
 
 **Script Version:**
  - VERSON: 
