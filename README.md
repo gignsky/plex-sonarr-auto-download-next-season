@@ -1,4 +1,4 @@
-# Current Version: v0.4.0
+# Current Version: v0.4.1
 
 # JOIN THE DISCORD FOR THE MOST ACTIVE DISUSSION AND DEVELOPMENT:
 https://discord.gg/vSRz2DRGjr
