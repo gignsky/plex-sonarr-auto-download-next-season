@@ -145,6 +145,10 @@ def testmode(printLine):
         print("Would you like to disable downloads and enable 'test-mode'?")
         print(printLine)
 
+        # # uncomment two below to always enable test mode
+        # print("Y")
+        # return bool(1)
+
         # actual prompt
         userInput = input("(Y/N)")
 
@@ -470,6 +474,12 @@ def notFirstSeasonChecker(
         assumed_sonarr_season_number + 1, sonarr_show
     )
 
+    # no next season per direction_finder might make code below unuseable
+    if assumed_sonarr_season_number_KEY_2 == 99:
+        print("     Sonarr indicates that there is no next season. SKIPPING...")
+        status = "continue"
+        return status
+
     # check next season avaliability
     try:
         sonarr_next_season = sonarr_show["seasons"][
@@ -477,7 +487,9 @@ def notFirstSeasonChecker(
         ]
         print("     Found a next season on Sonarr. Checking episode availability.")
     except IndexError:
-        print("     Sonarr indicates that there is no next season. SKIPPING...")
+        print(
+            "     Sonarr indicates that there is no next season. SKIPPING..."
+        )  # might be made unnececary by bit above this try except
         status = "continue"
         return status
 
@@ -649,19 +661,19 @@ def plexAccountWorker(
 
 
 def direction_finder(assumed_sonarr_season_number, sonarr_show):
-    # legnth=len(sonarr_show["seasons"])
-    #
-    # array_zero_season_number=sonarr_show["seasons"][0]["seasonNumber"]
-    #
-    # if(array_zero_season_number==0):
-    #
+    position_var = 0
 
-    for season_num in sonarr_show["seasons"]:
-        if (
-            sonarr_show["seasons"][season_num]["seasonNumber"]
-            == assumed_sonarr_season_number
-        ):
-            return season_num
+    for seasons in sonarr_show["seasons"]:
+        # pprint(seasons)
+
+        if seasons["seasonNumber"] == assumed_sonarr_season_number:
+            # print("good")
+            return position_var
+        else:
+            # print("Bad")
+            position_var = position_var + 1
+
+    return 99  # indicates the loop failed without attaining correct value
 
 
 ########
