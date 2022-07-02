@@ -230,7 +230,7 @@ def workhorse(
         from main()
     """
     try:
-        tvshows = plex.library.section(PLEX_TV_SHOWS_LIBRARY)
+        plex_tvshows = plex.library.section(PLEX_TV_SHOWS_LIBRARY)
         print("Found Library '" + PLEX_TV_SHOWS_LIBRARY + "'")
     except NotFound:
         print("Library with name '" + PLEX_TV_SHOWS_LIBRARY + "' not found.")
@@ -238,7 +238,7 @@ def workhorse(
 
     PlexTVShowsToCheck = {}
 
-    iterate = tvshows.search(None, None, None, "episode", inProgress=True)
+    iterate = plex_tvshows.search(None, None, None, "episode", inProgress=True)
 
     for episode in iterate:
         plex_show = episode.show()
@@ -323,10 +323,12 @@ def workhorse(
                 + str(assumed_sonarr_season_number)
             )
 
+            assumed_sonarr_season_number_KEY = direction_finder(
+                assumed_sonarr_season_number, sonarr_show
+            )
+
             try:
-                sonarr_season = sonarr_show["seasons"][
-                    int(assumed_sonarr_season_number)
-                ]
+                sonarr_season = sonarr_show["seasons"][assumed_sonarr_season_number_KEY]
                 print("     Found current season on Sonarr.")
             except IndexError:
                 print("     Can't match Sonarr Season. SKIPPING...")
@@ -337,7 +339,9 @@ def workhorse(
                     print(
                         f"Current Season downloaded is first season in {plex_show} and inprogress episode is pilot. Downloading remaining episodes in this first season."
                     )
-                    sonarr_next_season = sonarr_show["seasons"][1]
+                    sonarr_next_season = sonarr_show["seasons"][
+                        assumed_sonarr_season_number_KEY
+                    ]
                     downloadNewEpisodes(
                         sonarr_show,
                         sonarr_next_season,
@@ -346,7 +350,7 @@ def workhorse(
                         DOWNLOAD_TARGET,
                     )
                 else:
-                    # print("elsed nothing to report") #was used for testing purposes
+                    # print("elsed nothing to report") # was used for testing purposes
                     status = notFirstSeasonChecker(
                         sonarr_show,
                         assumed_sonarr_season_number,
@@ -392,14 +396,26 @@ def notFirstSeasonChecker(
     SONARR_API_KEY,
     DOWNLOAD_TARGET,
 ):
+    assumed_sonarr_season_number_KEY_2 = direction_finder(
+        assumed_sonarr_season_number + 1, sonarr_show
+    )
+
+    # no next season per direction_finder might make code below unuseable
+    if assumed_sonarr_season_number_KEY_2 == 99:
+        print("     Sonarr indicates that there is no next season. SKIPPING...")
+        status = "continue"
+        return status
+
     # check next season avaliability
     try:
         sonarr_next_season = sonarr_show["seasons"][
-            int(assumed_sonarr_season_number + 1)
+            int(assumed_sonarr_season_number_KEY_2)
         ]
         print("     Found a next season on Sonarr. Checking episode availability.")
     except IndexError:
-        print("     Sonarr indicates that there is no next season. SKIPPING...")
+        print(
+            "     Sonarr indicates that there is no next season. SKIPPING..."
+        )  # might be made unnececary by bit above this try except
         status = "continue"
         return status
 
@@ -554,6 +570,22 @@ def plexAccountWorker(
             print(printLine)
 
     return plex
+
+
+def direction_finder(assumed_sonarr_season_number, sonarr_show):
+    position_var = 0
+
+    for seasons in sonarr_show["seasons"]:
+        # pprint(seasons)
+
+        if seasons["seasonNumber"] == assumed_sonarr_season_number:
+            # print("good")
+            return position_var
+        else:
+            # print("Bad")
+            position_var = position_var + 1
+
+    return 99  # indicates the loop failed without attaining correct value
 
 
 ########
