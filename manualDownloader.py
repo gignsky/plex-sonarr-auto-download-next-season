@@ -405,7 +405,9 @@ def workhorse(
                     print(
                         f"Current Season downloaded is first season in {plex_show} and inprogress episode is pilot. Downloading remaining episodes in this first season."
                     )
-                    sonarr_next_season = sonarr_show["seasons"][1]
+                    sonarr_next_season = sonarr_show["seasons"][
+                        assumed_sonarr_season_number_KEY
+                    ]
                     downloadNewEpisodes(
                         sonarr_show,
                         sonarr_next_season,
