@@ -554,8 +554,8 @@ def downloadNewEpisodes(
         monitor(
             SONARR_URL,
             SONARR_API_KEY,
-            sonarr_show["id"],
-            str(sonarr_next_season["seasonNumber"]),
+            requestBody["seriesId"],
+            requestBody["seasonNumber"],
         )
 
         # actully order sonarr to download items
