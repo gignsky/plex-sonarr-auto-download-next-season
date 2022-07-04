@@ -14,7 +14,7 @@ def settings():
     NOTE Running this script in "test-mode" will additionally disable the scripts ability to set seasons and episodes to "monitored" status
     NOTE TEST_MODE is disabled by default and set to False, to turn on this feature script-wide simply set the below variable to True"""
 
-    TEST_MODE = True
+    TEST_MODE = False
 
     # Determines how many episodes before the end of the season a new season should be downloaded.
     EPISODE_THRESHOLD = 2
