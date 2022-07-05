@@ -4,13 +4,13 @@ import json
 import requests
 
 # default definitions as this file will be used as a supplimental file; these defininitions are only in place to remove the associated error:
-baseurl = ""
-apikey = ""
+base_url = ""
+api_key = ""
 SONARR_SERIES_ID = -1
-seasonNum = -1
+season_num = -1
 
 
-def main(baseurl, apikey, SONARR_SERIES_ID, seasonNum):
+def main(base_url, api_key, SONARR_SERIES_ID, season_num):
     """Set overall season to monitored
 
     Args:
@@ -22,49 +22,49 @@ def main(baseurl, apikey, SONARR_SERIES_ID, seasonNum):
         totalSeasonEpisodes (_NULL_): total number of episodes in season; this is used to verify that the correct number of episodes is being changed before doing so will be converted to int by monitorEpisodes.py if nececery
     """
     # char vars to ensure they have been set
-    checkVars(baseurl, apikey, SONARR_SERIES_ID, seasonNum)
+    check_vars(base_url, api_key, SONARR_SERIES_ID, season_num)
 
     # set paths
-    seriesPath, updatePath = pathfinder(baseurl, apikey, SONARR_SERIES_ID)
+    series_path, update_path = path_finder(base_url, api_key, SONARR_SERIES_ID)
 
     # get series specific data
-    getSeries = requests.get(seriesPath)
+    get_series = requests.get(series_path)
 
     # export body
-    dataToMod = getSeries.text
+    data_to_mod = get_series.text
 
     # load data with json object from getSeries.text
-    data = json.loads(dataToMod)
+    data = json.loads(data_to_mod)
 
     # mods season number to true monitored
-    seasonSection = data["seasons"]
-    modSeason = seasonSection[int(seasonNum)]
-    modSeason["monitored"] = bool(1)
+    season_selection = data["seasons"]
+    mod_season = season_selection[int(season_num)]
+    mod_season["monitored"] = bool(1)
 
     # return json object back to string
     output = json.dumps(data)
 
     # find details to set seasons episodes to monitored
-    stats = modSeason["statistics"]
-    totalSeasonEpisodes = stats["totalEpisodeCount"]
+    stats = mod_season["statistics"]
+    total_season_episodes = stats["totalEpisodeCount"]
 
     # send modified body
-    requests.put(updatePath, output)
+    requests.put(update_path, output)
 
-    return totalSeasonEpisodes
+    return total_season_episodes
 
 
-def pathfinder(baseurl, apikey, SONARR_SERIES_ID):
-    seriesSpecPath = (
-        baseurl + "/api/series/" + str(SONARR_SERIES_ID) + "?apikey=" + apikey
+def path_finder(base_url, api_key, SONARR_SERIES_ID):
+    series_spec_path = (
+        base_url + "/api/series/" + str(SONARR_SERIES_ID) + "?apikey=" + api_key
     )
-    seriesUpdatePath = baseurl + "/api/series?apikey=" + apikey
-    return seriesSpecPath, seriesUpdatePath
+    series_update_path = base_url + "/api/series?apikey=" + api_key
+    return series_spec_path, series_update_path
 
 
-def checkVars(baseurl, apikey, SONARR_SERIES_ID, seasonNum):
+def check_vars(base_url, api_key, SONARR_SERIES_ID, season_num):
 
-    if baseurl == "" or apikey == "" or SONARR_SERIES_ID == -1 or seasonNum == -1:
+    if base_url == "" or api_key == "" or SONARR_SERIES_ID == -1 or season_num == -1:
         print("+++++++++++++++++++++++++++++++++++++++")
         print("Yo Homie! One of the 'monitorSeason.py' attributes was NOT set")
         print("+++++++++++++++++++++++++++++++++++++++")
