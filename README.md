@@ -1,87 +1,51 @@
-# Current Version: v0.4.1
+# Current Version: v0.5.0
+
+# CURRENT VERSION DETAILS:
+    - unified script that combines the old versions into one single script with broken apart modules allowing for easier modification in the future
 
 # JOIN THE DISCORD FOR THE MOST ACTIVE DISUSSION AND DEVELOPMENT:
 https://discord.gg/vSRz2DRGjr
 
 # PURPOSE
-PlexSonarrAutoDownloader is a script that connects to Plex and Sonarr to automatically
+Plex-Sonarr-Auto-Downloader is a script that connects to Plex and Sonarr to automatically
 download the next season of a show you are watching based on the episode you are on.
 
+# INSTALLATION:
+1. Download current zip file from releases
+2. Unpack zip file into directory you want to run script from
+3. Ensure requred dependencies are installed
+    - Check required_dependencies.md
+4. Modify Settings
+    A. Open "config.py" and modify CONSTANTS under "# START HERE"
+        - This includes PLEX_URL, PLEX_TOKEN, SONARR_URL, & SONARR_API_KEY
+    B. Open "settings_constants.py" and modify TEST_MODE to "True" (without the quotes) if you wish to run this script in test mode
+        - See information in "settings_constants.py" for more information about TEST_MODE
+5. RUNNING THE SCRIPT
+    A. To run automatically run the file with the argument "auto" (without the quotes) directly after the "main.py"
+        - (e.x. python3 main.py auto) | this will run the script in auto mode
+    B. To run the script manually run the file without the "auto" argument
+        - (e.x. python3 main.py) | this will run the script in manual mode allowing for script allowing for manual selection of which user to monitor
+6. Cronjobs | if you want to add a cronjob check "crontab - examples.txt" for instructions
 
-# VERSION DETAILS
+# OPTIONS:
+  **NOTE** the monitored scripts have the capablitiy to ensure an entire series is monitored, this is deliberitly turned off by default to avoid acceidently messing up special cases in my test enviroment that might effect yours as well. If you wish to "re-enable" this ability navigate to production/withMonitorFunction/monitorFunctions/monitorMaster.py and undo the large block comment referencing this subject.
 
-**NOTE**
-Python Script will fail to access a users account if a space appears in their name. Should Fix Later.
+# NOTE ON PREVIOUS VERSIONS
+- Details pertaining to older versions of the script have been removed from this README.md if you would like to know about the changes please reference the detailed README's in each previous branch pertaining to the version you are curious about.
 
-  # ORIGINAL VERSION v0.1.0
-   
-   https://github.com/PeacefulDreams/NewEpisodeDownloader
-   
-    (See. originalScript/docker-PlexSonarrAutoDownloader/)
+# KNOWN ISSUES:
+- [Ref. #34] Python Script will fail to access a users account if a space appears in their name. Should Fix Later.
 
-    -The original version works for the plex server owner account.
-    -The script will scan the plex server owner's in-progress tv shows and compare to a list of TV Shows grabbed from Soanrr.
-      -If a show has less than the EPISODE_THRESHOLD the script will check to see if a next season exists and if any episodes are already downloaded from that season.
-        -If the season exists and no episodes are downloaded the script will send a download command to sonarr.
-    -Python build can run automatically with crontab (See. originalScript/crontab - examples.txt)
+# TO-DO LIST:
+- [Ref. #18] Clean README.md again for the v1.0 release
+- [Ref. #17] Convert tracking of plex tv-shows from "in-progress" to "watched" flag, possibly a combination of both
+- [Ref. 16] Add logger and beautify output, preferably with summeries
+- [Ref. 15] Beautify Output texts
+- [Ref. 9] Convert to an executable or package within pip; additionally, the docker container should be started back up!
+- [Ref. 6] Have option to download specials after show is over
+- [Ref. ###] When all of a "ended" show is finsihed being watched downgrade via profile change - MAYBE
+- [Ref. ###] A configuration file cold be added which would allow specific user selection on a multi-user server that would allow for only specific users to be watched - MAYBE
 
-    **NOTE**
-      -If season that download command references is marked as "UNMONITORED" then sonarr will search for the season but fail to send the order to your download client
-        -This is one of the issues the a PRODUCTION VERSION aims to fix. (See. production/withMonitorFunction)
-
-  # PRODUCTION VERSIONS | v0.2.0 and Above - Python Only (Might convert to docker eventually)
-    (See. production/)
-
-    # NO_MONITOR FUNCTION - VERSION v0.2.0
-      (See. noMonitorFunction/)
-
-      -The NO MONITOR VERSION works similarly to the ORIGINAL VERSION in terms of the neccecity for sonarr to already be monitoring both the show and season that the script will inevitablly call upon.
-      -This version however has the ability to handle more user accounts than just the server owner.
-
-    # WITH_MONITOR_FUNCTION - VERSION v0.3.0
-      (See. withMonitorFunction/)
-
-      -The WITH MONITOR VERSION works similarly to the NO MONITOR VERSION with the added addition that it does not require that you keep your sonarr configured to have undownloaded seasons monitored
-        -This version will automatically set the season that it decides to download to monitored prior to downloading thereby leading to a seemless experince when run via crontab periodically.
-
-    -The PRODUCTION VERSIONS have two variations each.
-      1. Manual - Intended to be run manually and allows the user to select which user they wish to apply the script to; this can be any user with access to the configured Plex server.
-        (See. "manualUserSelectionAutoDownload.py" OR "noMonitor_manualUserSelectionAutoDownload.py" depending on selected usecase)
-      2. Automatic - Intended to be run either manually or with a crontab job for automatic processing.
-        (See. "noMonitor_PlexSonarrAutoDownloader.py" OR "PlexSonarrAutoDownloader.py" depending on selected usecase)
-
-
-**********NOTE the monitored scripts have the capablitiy to ensure an entire series is monitored, this is deliberitly turned off by default to avoid acceidently messing up special cases in my test enviroment that might effect yours as well. If you wish to "re-enable" this ability navigate to production/withMonitorFunction/monitorFunctions/monitorMaster.py and undo the large block comment referencing this subject.
-
-
-
-# INSTALLATION & CONFIGURATION
-  -The script can be installed in two ways: Via Docker or just as a plain Python script with cron.
-
-  Docker install:
-  1. cd into the folder of the script.
-    (See. originalScript/)
-      ***NOTE*** Only the ORIGINAL VERSION has a Docker build at the moment, the PRODUCTION VERSIONS may be updated for a docker image at some point in the future.
-  2. Open the script and adjust the variables to your setup (Plex URL, Token, Sonarr URL, Token)
-  3. In a terminal, type docker build . to build the docker container. At the end of the process, Docker will tell you the tag
-    it has given to the resulting image.
-  4. In the same terminal, type docker run [NAME OF CONTAINER IMAGE HERE]
-    *(without [])
-
-  Python install
-  1. Copy the script version you have decided to run anywhere you like. Be aware that their might be some permission issues with cron depending on where you put it.
-  2. Open the script and adjust the variables to your setup (See. config.py in root project directory)
-  3. Note that different versions have different python dependencies, (See. "requiredDependancies.txt") for a single line that you can run to install required dependencies based on selected versions.
-  4. In a terminal, type crontab -e to add the script to cron and run it periodically
-    (See. "crontab - examples.txt")
-      - Do however check if the path to your python executable is the same. You can do so by typing 'which python' or 'which python3' in a terminal.
-      - Make note of the "script_output.txt" path, this will be the most recent output of the script.
-
-
-# TESTED ON
-
-  # ORIGINAL VERSION v0.1.0
-    The original script was tested on a local environment with two active plex users, so your mileage may vary on larger installs.
-
-  # PRODUCTION VERSIONS v0.2.0 and Above
-    Both of the below versions were tested on a LAN enviroment with access available from the outside WAN. 11 total user accounts, 10 of which have consumed some content, but some are MOVIE ONLY watchers and have no interest in television, the script can handle all these exceptions that occur when an account has no in-progress TV Shows.
+# TESTED ON:
+- PRODUCTION VERSIONS v0.2.0 and Above
+    - Both of the below versions were tested on a LAN enviroment with access available from the outside WAN. 11 total user accounts, 10 of which have consumed some content, but some are MOVIE ONLY watchers and have no interest in television, the script can handle all these exceptions that occur when an account has no in-progress TV Shows.

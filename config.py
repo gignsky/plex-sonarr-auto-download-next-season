@@ -4,29 +4,18 @@ def initialConfigs():
     Returns:
         initial config variables
     """
-    # General
-    LOG_LEVEL = 1
-    # Only Full Season at this time. Perhaps 'First Episode' in the future?
-    DOWNLOAD_TARGET = "FULL_SEASON"
-
     # START HERE
 
-    # Determines how many episodes before the end of the season a new season should be downloaded.
-    EPISODE_THRESHOLD = 2
-
     # Plex
-    PLEX_URL = "http://IP_TO_PLEX_SERVER:32400/"
-    PLEX_TOKEN = "PLEX_TOKEN"
-    PLEX_TV_SHOWS_LIBRARY = "TV_SHOW_LIBRARY_NAME_FROM_PLEX"
+    PLEX_URL = "http://192.168.51.4:32400/"
+    PLEX_TOKEN = "LnHxpNyxTZf-xbpqJW3D"
+    PLEX_TV_SHOWS_LIBRARY = "All Shows"
 
     # Sonarr
-    SONARR_URL = "http://IP_TO_SONARR:8989"
-    SONARR_API_KEY = "API_KEY"
+    SONARR_URL = "http://192.168.51.11:8989"
+    SONARR_API_KEY = "d1b05072a65a4da0b700bb2fcbee1f56"
 
     return (
-        LOG_LEVEL,
-        EPISODE_THRESHOLD,
-        DOWNLOAD_TARGET,
         PLEX_URL,
         PLEX_TOKEN,
         PLEX_TV_SHOWS_LIBRARY,
