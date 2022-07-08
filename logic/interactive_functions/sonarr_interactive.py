@@ -48,6 +48,7 @@ def downloadNewEpisodes(
     SONARR_API_KEY,
     DOWNLOAD_TARGET,
     TEST_MODE,
+    assumed_sonarr_season_number_KEY
 ):
 
     print_met_threshold()
@@ -69,6 +70,7 @@ def downloadNewEpisodes(
             SONARR_API_KEY,
             requestBody["seriesId"],
             requestBody["seasonNumber"],
+            assumed_sonarr_season_number_KEY
         )
 
         # actully order sonarr to download items

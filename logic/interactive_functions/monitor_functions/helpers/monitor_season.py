@@ -10,7 +10,7 @@ SONARR_SERIES_ID = -1
 season_num = -1
 
 
-def main(base_url, api_key, SONARR_SERIES_ID, season_num):
+def main(base_url, api_key, SONARR_SERIES_ID, season_num,assumed_sonarr_season_number_KEY):
     """Set overall season to monitored
 
     Args:
@@ -38,7 +38,7 @@ def main(base_url, api_key, SONARR_SERIES_ID, season_num):
 
     # mods season number to true monitored
     season_selection = data["seasons"]
-    mod_season = season_selection[int(season_num)]
+    mod_season = season_selection[assumed_sonarr_season_number_KEY]
     mod_season["monitored"] = bool(1)
 
     # return json object back to string

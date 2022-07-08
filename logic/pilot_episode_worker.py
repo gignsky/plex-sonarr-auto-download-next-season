@@ -25,4 +25,5 @@ def main(
         SONARR_API_KEY,
         DOWNLOAD_TARGET,
         test_mode,
+        assumed_sonarr_season_number_KEY
     )
