@@ -31,3 +31,7 @@ fixed issue #35
 # V0.5.2
 # BUG FIX
 fixed issue #40
+
+# V0.5.3
+# BUG FIX
+fixed issue #43
