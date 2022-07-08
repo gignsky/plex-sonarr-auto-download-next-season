@@ -4,6 +4,7 @@
     - unified script that combines the old versions into one single script with broken apart modules allowing for easier modification in the future
     - updated readme version number
     - fixed bug in issue #43
+    - fixed bug in issue #44
 
 # JOIN THE DISCORD FOR THE MOST ACTIVE DISUSSION AND DEVELOPMENT:
 https://discord.gg/vSRz2DRGjr
