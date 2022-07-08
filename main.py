@@ -63,6 +63,8 @@ def main():
         all_accounts_index,
     ) = plex_inital_details(PLEX_URL, PLEX_TOKEN)
 
+    INITAL_PLEX_SERVER = plex_server
+
     # Check Plex for watched shows that are nearing the end of the season
 
     # determine if run manually verses in auto-mode
@@ -105,7 +107,7 @@ def main():
         else:
             print_now_analyzing_user_library(current_account_nice)
 
-            plex_server = tryPlexUser(current_account_original, plex_server)
+            plex_server = tryPlexUser(current_account_original, INITAL_PLEX_SERVER)
 
             # break upon user failing
             if plex_server != "failed":
