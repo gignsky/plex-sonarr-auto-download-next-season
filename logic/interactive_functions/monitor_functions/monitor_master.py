@@ -15,7 +15,7 @@ SONARR_SERIES_ID = -1
 season_number = -1
 
 
-def main(base_url, api_key, SONARR_SERIES_ID, season_number):
+def main(base_url, api_key, SONARR_SERIES_ID, season_number,assumed_sonarr_season_number_KEY):
 
     # char vars to ensure they have been set
     check_vars(base_url, api_key, SONARR_SERIES_ID, season_number)
@@ -37,7 +37,7 @@ def main(base_url, api_key, SONARR_SERIES_ID, season_number):
 
     # set season to monitored & extract vars for episode monitoring
     total_season_episodes = set_season_monitored(
-        base_url, api_key, SONARR_SERIES_ID, season_number
+        base_url, api_key, SONARR_SERIES_ID, season_number,assumed_sonarr_season_number_KEY
     )
 
     # set episodes inside season to monitored

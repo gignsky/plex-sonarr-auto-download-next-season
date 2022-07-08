@@ -24,7 +24,7 @@ def main(base_url, api_key, season_num, SONARR_SERIES_ID, total_season_episodes)
     # char vars to ensure they have been set
     check_vars(base_url, api_key, SONARR_SERIES_ID, season_num, total_season_episodes)
 
-    all_episode_path = base_url + "/api/episode?api_key=" + api_key
+    all_episode_path = base_url + "/api/episode?apikey=" + api_key
 
     # grab all episodes in show
     get_episodes = requests.get(all_episode_path, params={"seriesId": SONARR_SERIES_ID})
@@ -81,7 +81,7 @@ def modify_episodes(base_url, api_key, sorted_IDs, send_path):
 def single_episode_path_finder(base_url, api_key, episode_ID):
     """Set Paths"""
     single_episode_path = (
-        base_url + "/api/episode/" + str(episode_ID) + "?api_key=" + api_key
+        base_url + "/api/episode/" + str(episode_ID) + "?apikey=" + api_key
     )
     return single_episode_path
 
