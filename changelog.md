@@ -23,3 +23,7 @@ additionally the script was unified into one single file that can be run;
     - to run manually run "python3 main.py"
     - to run in automatic mode run "python3 main.py auto"
     - for help run "python3 main.py help"
+
+# V0.5.1
+# BUG FIX
+fixed issue #35
