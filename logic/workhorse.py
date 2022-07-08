@@ -114,6 +114,7 @@ def main(
                         assumed_season_number,
                         plex_current_episode,
                         sonarr_season,
+                        TEST_MODE,
                     )
                 else:
                     status = non_pilot_worker(
