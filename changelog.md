@@ -27,3 +27,7 @@ additionally the script was unified into one single file that can be run;
 # V0.5.1
 # BUG FIX
 fixed issue #35
+
+# V0.5.2
+# BUG FIX
+fixed issue #
