@@ -36,3 +36,7 @@ fixed issue #40
 # BUG FIX
 fixed issue #43
 fixed issue #44
+
+# V0.5.4
+# BUG FIX
+fixed issue with monitor season not being given next season key unreported in issues but will be updated in releases

@@ -60,6 +60,7 @@ def main(
             SONARR_API_KEY,
             DOWNLOAD_TARGET,
             TEST_MODE,
+            assumed_sonarr_season_number_KEY_2
         )
         if status == "continue":
             return status

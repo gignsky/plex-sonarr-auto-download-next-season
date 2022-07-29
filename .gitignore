@@ -16,3 +16,5 @@ logic/interactive_functions/monitor_functions/helpers/__pycache__/monitor_season
 logic/logical_functions/__pycache__/outputs.cpython-38.pyc
 logic/logical_functions/__pycache__/plex_logical.cpython-38.pyc
 logic/logical_functions/__pycache__/sonarr_logical.cpython-38.pyc
+.vscode/extensions.json
+.vscode/settings.json
