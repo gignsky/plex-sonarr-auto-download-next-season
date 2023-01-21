@@ -13,8 +13,6 @@ USEAGE
 NOTE *** This should work fine if you enter an external URL in the boxes below but services was tested with all devices running on an internal network with hardcoded LAN IP addresses
  """
 
-# added this line for commit fixing purposes to be removed in the commit after it's added
-
 import sys
 from config import initialConfigs
 from logic.general_small_logic_functions import user_select
