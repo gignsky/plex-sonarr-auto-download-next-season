@@ -1,9 +1,9 @@
 """
-USEAGE
+USAGE
 1. Locate #CONFIGURATION
 2. Locate #START HERE
-3. Input plex and sonarr URL's and API Credentials
-4. Configure EPISODE_THRESHOLD with desired integer
+3. Input plex and sonarr URLs and API Credentials
+4. Configure episode_threshold with desired integer
 5. Make NOTE of "test-mode" option, if you elect to enable test-mode the script will run as normal with the exception of the line that send the download command to sonarr. This should be used when you wish to query your library to see what will be downloaded upon running this script outside of test-mode.
 
     NOTE Running this script in "test-mode" will additionally disable the scripts ability to set seasons and episodes to "monitored" status
@@ -12,9 +12,9 @@ NOTE *** This should work fine if you enter an external URL in the boxes below b
  """
 
 import sys
-from config import initialConfigs
+from config import initial_configs
 from logic.general_small_logic_functions import user_select
-from logic.interactive_functions.plex_interactive import tryPlexUser
+from logic.interactive_functions.plex_interactive import try_plex_user
 from logic.outputs import (
     print_failed_to_access,
     print_script_started,
@@ -22,11 +22,12 @@ from logic.outputs import (
     print_now_analyzing_user_library,
 )
 from settings_constants import settings, test_mode  # import settings
-from logic.interactive_functions.sonarr_interactive import fetchSonarrShows
-from logic.plex import plex_inital_details
+from logic.interactive_functions.sonarr_interactive import fetch_sonarr_shows
+from logic.plex import plex_initial_details
 from logic.workhorse import main as workhorse
 
 print_script_started()
+
 
 # import inital configs
 (
@@ -35,7 +36,7 @@ print_script_started()
     PLEX_TV_SHOWS_LIBRARY,
     SONARR_URL,
     SONARR_API_KEY,
-) = initialConfigs()  # assign settings
+) = initial_configs()  # assign settings
 
 # import general settings
 (
@@ -54,7 +55,7 @@ except IndexError:
 
 def main():
     # fetch all shows that have been added to sonarr
-    all_sonarr_shows = fetchSonarrShows(SONARR_URL, SONARR_API_KEY)
+    all_sonarr_shows = fetch_sonarr_shows(SONARR_URL, SONARR_API_KEY)
 
     # grab plex account details
     (
@@ -62,7 +63,7 @@ def main():
         server_owner_account,
         all_accounts,
         all_accounts_index,
-    ) = plex_inital_details(PLEX_URL, PLEX_TOKEN)
+    ) = plex_initial_details(PLEX_URL, PLEX_TOKEN)
 
     INITAL_PLEX_SERVER = plex_server
 
@@ -108,7 +109,7 @@ def main():
         else:
             print_now_analyzing_user_library(current_account_nice)
 
-            plex_server = tryPlexUser(current_account_original, INITAL_PLEX_SERVER)
+            plex_server = try_plex_user(current_account_original, INITAL_PLEX_SERVER)
 
             # break upon user failing
             if plex_server != "failed":
