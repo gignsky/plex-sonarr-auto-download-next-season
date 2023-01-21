@@ -1,12 +1,13 @@
 def sonarr_key_assigner(season_number, sonarr_show):
-    """find associated key for sonarr show per requested season number
+    """Finds the associated key for a Sonarr show for a requested season number.
 
     Args:
-        season_number (int): season number value
-        sonarr_show (json thingy): all info from sonarr show
+        season_number (int): The requested season number.
+        sonarr_show (json): All information about a show from Sonarr.
 
     Returns:
-        _type_: _description_
+        int: The key associated with the requested season number.
+        int: 99 if the loop failed to find the correct value.
     """
     position_var = 0
 
