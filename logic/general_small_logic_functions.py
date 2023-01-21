@@ -1,15 +1,15 @@
 from logic.outputs import print_enter_number
-from settings_constants import printLine
+from settings_constants import print_line
 
 
 def assumed_season_number_finder(plex_current_season):
-    """find assummed season number from plex
+    """Finds the assumed season number from Plex
 
     Args:
-        plex_current_season (json thingy): the current working season from plex
+        plex_current_season (json): The current working season from Plex
 
     Returns:
-        int: assumed number of the season that is being worked on
+        int: The assumed number of the season that is being worked on.
     """
 
     # assume season number from plex
@@ -24,19 +24,32 @@ def assumed_season_number_finder(plex_current_season):
 def get_names(ALL_PLEX_ACCOUNTS):
     newList = []
 
-    for i in ALL_PLEX_ACCOUNTS:
-        item = str(i)
-        newItem = item.rsplit(":")[2]  # remove all before second ":"
-        newItem2 = newItem.rsplit(">")[0]  # remove ">" after name
-        newList.append(newItem2)
+    Args:
+        all_plex_accounts (list): A list of account objects.
 
-    return newList
+    Returns:
+        list: A list of account names.
+    """
+    new_list = []
+
+    for account in ALL_PLEX_ACCOUNTS:
+        item = str(account)
+        new_item = item.rsplit(":")[2]  # remove all before second ":"
+        new_item2 = new_item.rsplit(">")[0]  # remove ">" after name
+        new_list.append(new_item2)
+
+    return new_list
 
 
 def user_select(all_accounts, all_index):
-    """Prompt User for Account
+    """Prompts the user to select an account.
+
+    Args:
+        all_accounts (list): A list of all account names.
+        all_index (int): The index of the 'ALL' option in the list of accounts.
+
     Returns:
-        Selected User
+        int: The selected user's index in the list of accounts.
     """
     q = 0
     while q != 1:
@@ -56,24 +69,24 @@ def user_select(all_accounts, all_index):
             i = i + 1
 
         # request user seletion
-        printLine()
-        userInput = input(
+        print_line()
+        user_input = input(
             "Please Enter the Number Associated With the Account You Wish to Check: "
         )
 
         # check user selection
         try:
-            userInput = int(userInput)
+            user_input = int(user_input)
             q = 1
         except ValueError:
             print(
                 "Entered Value of '",
-                userInput,
+                user_input,
                 "' needs to be an whole number shown on screen",
             )
             q = 0
-            printLine()
+            print_line()
             print("Please Try Again!")
-            printLine()
+            print_line()
 
-    return userInput
+    return user_input
