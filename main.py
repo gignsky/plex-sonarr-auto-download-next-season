@@ -1,5 +1,3 @@
-# v0.5.0
-
 """
 USEAGE
 1. Locate #CONFIGURATION
