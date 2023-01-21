@@ -19,6 +19,7 @@ from logic.general_small_logic_functions import user_select
 from logic.interactive_functions.plex_interactive import tryPlexUser
 from logic.outputs import (
     print_failed_to_access,
+    print_script_started,
     print_finished_script,
     print_now_analyzing_user_library,
 )
