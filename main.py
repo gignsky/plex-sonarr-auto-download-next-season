@@ -27,6 +27,8 @@ from logic.interactive_functions.sonarr_interactive import fetchSonarrShows
 from logic.plex import plex_inital_details
 from logic.workhorse import main as workhorse
 
+print_script_started()
+
 # import inital configs
 (
     PLEX_URL,
