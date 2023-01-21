@@ -1,9 +1,16 @@
 from logic.general_small_logic_functions import get_names
 
 
-def plex_show_tvdb_CHECKER(plex_show):
-    # TODO NOTE THIS PROBOBLY NEEDS TO BE REFINED INTO ITERATING THROUGH A LOOP SO THAT IF TVDB ID IS NOT IN ONE OF THOSE TWO PLACES IT CAN STILL BE FOUND THIS WILL PRODUCE A PLEX SHOW CANNOT BE FOUND ERROR
-    """Prevents end of index issues with some user accounts containing large histories"""
+def plex_show_tvdb_checker(plex_show):
+    """Checks for the TVDB ID of a show in a Plex library.
+
+    Args:
+        plex_show: A show from a Plex library.
+
+    Returns:
+        x (str): The TVDB ID of the show, if found.
+        None: If the TVDB ID of the show is not found.
+    """
     if plex_show.guids != []:
         try:
             x = str(plex_show.guids[2].id).replace("tvdb://", "")
@@ -14,46 +21,47 @@ def plex_show_tvdb_CHECKER(plex_show):
     else:
         x = None
 
+    # TODO NOTE THIS PROBOBLY NEEDS TO BE REFINED INTO ITERATING THROUGH A LOOP SO THAT IF TVDB ID IS NOT IN ONE OF THOSE TWO PLACES IT CAN STILL BE FOUND THIS WILL PRODUCE A PLEX SHOW CANNOT BE FOUND ERROR
     return x
 
 
-def plex_shows_to_check(inprogress_shows):
-    """Find shows to check
+def plex_shows_to_check(in_progress_shows):
+    """Finds shows to check in a Plex library.
 
     Args:
-        inprogress_shows : list of shows with in-progress tag
+        in_progress_shows (list): A list of shows with the "in-progress" tag.
 
     Returns:
-        list: with shows to check
+        list: A list of shows to check, containing information about the show, season, and episode.
     """
 
     # set tvshows to check to empty
     plex_tv_shows_to_check = {}
 
     # iterate through inprogress shows
-    for episode in inprogress_shows:
+    for episode in in_progress_shows:
         # find overall show
         plex_show = episode.show()
         plex_season = episode.season()
         plex_episode = episode
-        plex_show_tvdb_ID = plex_show_tvdb_CHECKER(plex_show)
+        plex_show_tvdb_id = plex_show_tvdb_checker(plex_show)
 
         # check if tvdb is already in tv_shows_to_check
-        if not (plex_show_tvdb_ID in plex_tv_shows_to_check):
-            plex_tv_shows_to_check[plex_show_tvdb_ID] = {
+        if not (plex_show_tvdb_id in plex_tv_shows_to_check):
+            plex_tv_shows_to_check[plex_show_tvdb_id] = {
                 "show": plex_show,
                 "season": plex_season,
                 "episode": plex_episode,
             }
 
-        # if tvdb_ID is not in the to check continue with checks
+        # if tvdb_id is not in the to check continue with checks
         else:
             if (
                 plex_season.index
-                > plex_tv_shows_to_check[plex_show_tvdb_ID]["season"].index
+                > plex_tv_shows_to_check[plex_show_tvdb_id]["season"].index
             ):
                 # This episode is from a newer season than the existing one. We want the latest, so overwrite
-                plex_tv_shows_to_check[plex_show_tvdb_ID] = {
+                plex_tv_shows_to_check[plex_show_tvdb_id] = {
                     "show": plex_show,
                     "season": plex_season,
                     "episode": plex_episode,
@@ -61,14 +69,14 @@ def plex_shows_to_check(inprogress_shows):
             else:
                 if (
                     plex_season.index
-                    == plex_tv_shows_to_check[plex_show_tvdb_ID]["season"].index
+                    == plex_tv_shows_to_check[plex_show_tvdb_id]["season"].index
                 ):
                     if (
                         plex_episode.index
-                        > plex_tv_shows_to_check[plex_show_tvdb_ID]["episode"].index
+                        > plex_tv_shows_to_check[plex_show_tvdb_id]["episode"].index
                     ):
                         # The episode is from the same season and has a higher number. We want the latest, so overwrite
-                        plex_tv_shows_to_check[plex_show_tvdb_ID] = {
+                        plex_tv_shows_to_check[plex_show_tvdb_id] = {
                             "show": plex_show,
                             "season": plex_season,
                             "episode": plex_episode,
@@ -77,6 +85,15 @@ def plex_shows_to_check(inprogress_shows):
 
 
 def all_accounts_finder(plex):
+    """Finds all accounts on a Plex system.
+
+    Args:
+        plex (object): A Plex object.
+
+    Returns:
+        list: A list of all account names on the Plex system.
+    """
+
     # grab all accounts on system
     all_plex_accounts = plex.systemAccounts()
 

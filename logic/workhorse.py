@@ -1,18 +1,18 @@
 from .general_small_logic_functions import assumed_season_number_finder
 from .logical_functions.outputs import (
-    print_did_NOT_find_show_in_sonarr,
+    print_did_not_find_show_in_sonarr,
     print_found_show_in_sonarr,
 )
 from .logical_functions.sonarr_logical import sonarr_key_assigner
 from .outputs import (
     print_all_good,
     print_assumed_season_number,
-    print_can_NOT_match_plex_sonarr_show,
+    print_can_not_match_plex_sonarr_show,
     print_can_match_plex_sonarr_show,
     print_current_analyzed_show,
     print_no_in_progress,
 )
-from .logical_functions.plex_logical import plex_show_tvdb_CHECKER, plex_shows_to_check
+from .logical_functions.plex_logical import plex_show_tvdb_checker, plex_shows_to_check
 from .pilot_episode_worker import main as pilot_worker
 from .non_pilot_worker import main as non_pilot_worker
 from plexapi.exceptions import NotFound
@@ -45,10 +45,12 @@ def main(
         print("Library with name '" + PLEX_TV_SHOWS_LIBRARY + "' not found.")
         return Exception("Nothing is currently in progress for this user.")
 
-    # find inprogress shows for current account
-    inprogress_shows = plex_library.search(None, None, None, "episode", inProgress=True)
+    # find in progress shows for current account
+    in_progress_shows = plex_library.search(
+        None, None, None, "episode", inProgress=True
+    )
 
-    plex_tv_shows_to_check = plex_shows_to_check(inprogress_shows)
+    plex_tv_shows_to_check = plex_shows_to_check(in_progress_shows)
 
     # if shows to check is not empty
     if len(plex_tv_shows_to_check) >= 1:
@@ -69,7 +71,6 @@ def main(
             # find sonarr_show from all_sonarr_shows
             for show in all_sonarr_shows:
                 if str(show["tvdbId"]) == plex_show_tvdb_CHECKER(plex_current_show):
-
                     # set sonarr show
                     sonarr_show = show
 
