@@ -2,15 +2,19 @@ from logic.general_small_logic_functions import get_names
 
 
 def plex_show_tvdb_CHECKER(plex_show):
+    # TODO NOTE THIS PROBOBLY NEEDS TO BE REFINED INTO ITERATING THROUGH A LOOP SO THAT IF TVDB ID IS NOT IN ONE OF THOSE TWO PLACES IT CAN STILL BE FOUND THIS WILL PRODUCE A PLEX SHOW CANNOT BE FOUND ERROR
     """Prevents end of index issues with some user accounts containing large histories"""
-    try:
-        x = str(plex_show.guids[2].id).replace("tvdb://", "")
-        # print("Index -- No Error")
-        return x
-    except:
-        x = str(plex_show.guids[1].id).replace("tvdb://", "")
-        # print("End of Index -- Due to Error")
-        return x
+    if plex_show.guids != []:
+        try:
+            x = str(plex_show.guids[2].id).replace("tvdb://", "")
+            # print("Index -- No Error")
+        except:
+            x = str(plex_show.guids[1].id).replace("tvdb://", "")
+            # print("End of Index -- Due to Error")
+    else:
+        x = None
+
+    return x
 
 
 def plex_shows_to_check(inprogress_shows):
