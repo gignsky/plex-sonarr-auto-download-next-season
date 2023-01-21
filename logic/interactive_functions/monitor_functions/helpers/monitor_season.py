@@ -3,52 +3,52 @@
 import json
 import requests
 
-# default definitions as this file will be used as a supplimental file; these defininitions are only in place to remove the associated error:
+# Default url and api key for sonarr
 base_url = ""
 api_key = ""
 SONARR_SERIES_ID = -1
 season_num = -1
 
 
-def main(base_url, api_key, SONARR_SERIES_ID, season_num,assumed_sonarr_season_number_KEY):
+def main(
+    base_url, api_key, SONARR_SERIES_ID, season_num, assumed_sonarr_season_number_key
+):
     """Set overall season to monitored
 
     Args:
-        baseurl (str): url to sonarr
-        apikey (str): api for sonarr
-        SONARR_SERIES_ID (str or int): series id of sonarr show, will be conerted from str to int if neccecary inside this function
-        seasonNum (str): sonarr season number of episode
+        base_url (str): The base url of the sonarr instance
+        api_key (str): The API key for the sonarr instance
+        SONARR_SERIES_ID (int): The series id of the show in sonarr
+        season_num (int): The season number of the episodes to be set to monitored
     Returns:
-        totalSeasonEpisodes (_NULL_): total number of episodes in season; this is used to verify that the correct number of episodes is being changed before doing so will be converted to int by monitorEpisodes.py if nececery
+        total_season_episodes (int): The total number of episodes in the given season
     """
-    # char vars to ensure they have been set
+    # Verify that the necessary variables have been set
     check_vars(base_url, api_key, SONARR_SERIES_ID, season_num)
 
     # set paths
     series_path, update_path = path_finder(base_url, api_key, SONARR_SERIES_ID)
 
-    # get series specific data
+    # Get series specific data
     get_series = requests.get(series_path)
 
-    # export body
+    # Get the JSON data for the series
     data_to_mod = get_series.text
-
-    # load data with json object from getSeries.text
     data = json.loads(data_to_mod)
 
-    # mods season number to true monitored
+    # Set the monitored flag for the selected season to True
     season_selection = data["seasons"]
-    mod_season = season_selection[assumed_sonarr_season_number_KEY]
-    mod_season["monitored"] = bool(1)
+    mod_season = season_selection[assumed_sonarr_season_number_key]
+    mod_season["monitored"] = True
 
-    # return json object back to string
+    # Convert the JSON data back to a string
     output = json.dumps(data)
 
-    # find details to set seasons episodes to monitored
+    # Get the total number of episodes in the selected season
     stats = mod_season["statistics"]
     total_season_episodes = stats["totalEpisodeCount"]
 
-    # send modified body
+    # Send the modified data to sonarr
     requests.put(update_path, output)
 
     return total_season_episodes
@@ -63,9 +63,17 @@ def path_finder(base_url, api_key, SONARR_SERIES_ID):
 
 
 def check_vars(base_url, api_key, SONARR_SERIES_ID, season_num):
+    """Check that the necessary variables have been set
 
+    Args:
+        base_url (str): The base url of the sonarr instance
+        api_key (str): The API key for the sonarr instance
+        SONARR_SERIES_ID (int): The series id of the show in sonarr
+        season_num (int): The season number of the episodes to be set to monitored
+
+    Returns:
+        None
+    """
     if base_url == "" or api_key == "" or SONARR_SERIES_ID == -1 or season_num == -1:
-        print("+++++++++++++++++++++++++++++++++++++++")
-        print("Yo Homie! One of the 'monitorSeason.py' attributes was NOT set")
-        print("+++++++++++++++++++++++++++++++++++++++")
-        exit
+        print("One of the necessary variables for the script was not set.")
+        exit()
