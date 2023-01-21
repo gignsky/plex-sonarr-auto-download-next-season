@@ -19,6 +19,7 @@ from logic.general_small_logic_functions import user_select
 from logic.interactive_functions.plex_interactive import tryPlexUser
 from logic.outputs import (
     print_failed_to_access,
+    print_script_started,
     print_finished_script,
     print_now_analyzing_user_library,
 )
@@ -26,6 +27,8 @@ from settings_constants import settings, test_mode  # import settings
 from logic.interactive_functions.sonarr_interactive import fetchSonarrShows
 from logic.plex import plex_inital_details
 from logic.workhorse import main as workhorse
+
+print_script_started()
 
 # import inital configs
 (
