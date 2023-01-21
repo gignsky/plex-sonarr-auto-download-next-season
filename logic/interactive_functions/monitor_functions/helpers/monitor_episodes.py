@@ -8,57 +8,65 @@ base_url = ""
 api_key = ""
 SONARR_SERIES_ID = -1
 season_num = -1
-totalSeasonEpisodes = -1
+total_season_episodes = -1
 
 
 def main(base_url, api_key, season_num, SONARR_SERIES_ID, total_season_episodes):
-    """Set all episodes of a season to monitored
+    """
+    Set all episodes of a given season to monitored
 
     Args:
-        base_url (str): url to sonarr
-        api_key (str): api for sonarr
-        seasonNum (str): sonarr season number of episode
-        SONARR_SERIES_ID (str or int): series id of sonarr show, will be conerted from str to int if neccecary inside this function
-        totalSeasonEpisodes (int): total number of episodes in season; this is used to verify that the correct number of episodes is being changed before doing so
+        base_url (str): The base url of the sonarr instance
+        api_key (str): The API key for the sonarr instance
+        season_num (int): The season number of the episodes to be set to monitored
+        SONARR_SERIES_ID (int): The series id of the show in sonarr
+        total_season_episodes (int): The total number of episodes in the given season, used to verify that the correct number of episodes are being changed before doing so
     """
-    # char vars to ensure they have been set
+    # Verify that the necessary variables have been set
     check_vars(base_url, api_key, SONARR_SERIES_ID, season_num, total_season_episodes)
 
+    # Construct the url to get all episodes for the series
     all_episode_path = base_url + "/api/episode?apikey=" + api_key
 
-    # grab all episodes in show
+    # Get all episodes for the series
     get_episodes = requests.get(all_episode_path, params={"seriesId": SONARR_SERIES_ID})
 
-    # export body
+    # Get the JSON data for the episodes
     data_to_mod = get_episodes.text
-
-    # load data with json object from getEpisodes
     data = json.loads(data_to_mod)
 
-    # loop for getting index's of data's list coresponding to the appropriate season
-    episode_IDs = []  # initiate list
-    for (
-        i
-    ) in data:  # loop and add episode id's of episodes in appropriate season to list
-        if i["seasonNumber"] == season_num:
-            episode_IDs.append(i["id"])
+    # Get the episode ids for the episodes in the given season
+    episode_ids = []
+    for episode in data:
+        if episode["seasonNumber"] == season_num:
+            episode_ids.append(episode["id"])
 
-    # sort list
-    sorted_IDs = sorted(episode_IDs)
+    # Sort the episode ids
+    sorted_ids = sorted(episode_ids)
 
-    # check legnth
-    if total_season_episodes != len(episode_IDs):
-        "You got a problem homie, there are more episode Id's in this here 'episodeIds' list, why don't you look at this manually"
+    # Check if the number of episode ids matches the total number of episodes in the season
+    if total_season_episodes != len(episode_ids):
+        print(
+            "The number of episode ids does not match the total number of episodes in the season. Please check manually."
+        )
 
-    modify_episodes(base_url, api_key, sorted_IDs, all_episode_path)
+    # Call the function to modify the episodes
+    modify_episodes(base_url, api_key, sorted_ids, all_episode_path)
 
 
 # grab episodes from list & modify to true
-def modify_episodes(base_url, api_key, sorted_IDs, send_path):
-    """Convert Strings to Json and Back again!"""
-    for x in sorted_IDs:
+def modify_episodes(base_url, api_key, sorted_ids, send_path):
+    """Modify episodes to monitored
+
+    Args:
+        base_url (str): The base url of the sonarr instance
+        api_key (str): The API key for the sonarr instance
+        sorted_ids (list): List of episode ids for the episodes to be modified
+        send_path (str): The url to send the modified episodes to
+    """
+    for episode_id in sorted_ids:
         path = single_episode_path_finder(
-            base_url, api_key, x
+            base_url, api_key, episode_id
         )  # grab path for working episode
         single_episode_get = requests.get(path)  # grab single episode detail
 
@@ -69,7 +77,7 @@ def modify_episodes(base_url, api_key, sorted_IDs, send_path):
         )  # load data with json object from singleEpisodeGet
 
         # modify to monitored
-        data["monitored"] = bool(1)
+        data["monitored"] = True
 
         # return json object to string
         output = json.dumps(data)
@@ -78,17 +86,36 @@ def modify_episodes(base_url, api_key, sorted_IDs, send_path):
         requests.put(send_path, output)
 
 
-def single_episode_path_finder(base_url, api_key, episode_ID):
-    """Set Paths"""
+def single_episode_path_finder(base_url, api_key, episode_id):
+    """Find the url for a single episode
+
+    Args:
+        base_url (str): The base url of the sonarr instance
+        api_key (str): The API key for the sonarr instance
+        episode_id (int): The id of the episode to get the url for
+
+    Returns:
+        str: The url for the given episode
+    """
     single_episode_path = (
-        base_url + "/api/episode/" + str(episode_ID) + "?apikey=" + api_key
+        base_url + "/api/episode/" + str(episode_id) + "?apikey=" + api_key
     )
     return single_episode_path
 
 
 def check_vars(base_url, api_key, SONARR_SERIES_ID, season_num, total_season_episodes):
-    """ENSURE VARS ARE INPUTTED CORRECTLY
-    Nothing Occurs if everythings checks out"""
+    """Check that the necessary variables have been set
+
+    Args:
+        base_url (str): The base url of the sonarr instance
+        api_key (str): The API key for the sonarr instance
+        SONARR_SERIES_ID (int): The series id of the show in sonarr
+        season_num (int): The season number of the episodes to be set to monitored
+        total_season_episodes (int): The total number of episodes in the given season
+
+    Returns:
+        None
+    """
     if (
         base_url == ""
         or api_key == ""
@@ -96,5 +123,5 @@ def check_vars(base_url, api_key, SONARR_SERIES_ID, season_num, total_season_epi
         or season_num == -1
         or total_season_episodes == -1
     ):
-        print("Yo Homie! One of the 'monitorEpisodes.py' attributes was NOT set")
-        exit
+        print("One of the necessary variables for the script was not set.")
+        exit()
