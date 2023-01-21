@@ -110,14 +110,6 @@ def print_failed_to_access(user):
     printLine()
 
 
-def print_script_started():
-    now = datetime.now()
-    printLine()
-    print("Script imported all packages and began running core logic at: ")
-    print(now)
-    printLine()
-
-
 def print_finished_script():
     now = datetime.now()
     printLine()
