@@ -1,7 +1,7 @@
 # v0.5.0
 
 """
-USEAGE
+USAGE
 1. Locate #CONFIGURATION
 2. Locate #START HERE
 3. Input plex and sonarr URL's and API Credentials

@@ -3,7 +3,7 @@
 import json
 import requests
 
-# default definitions as this file will be used as a supplimental file; these defininitions are only in place to remove the associated error:
+# default definitions as this file will be used as a supplemental file; these definitions are only in place to remove the associated error:
 base_url = ""
 api_key = ""
 SONARR_SERIES_ID = -1
@@ -16,10 +16,10 @@ def main(base_url, api_key, SONARR_SERIES_ID, season_num,assumed_sonarr_season_n
     Args:
         baseurl (str): url to sonarr
         apikey (str): api for sonarr
-        SONARR_SERIES_ID (str or int): series id of sonarr show, will be conerted from str to int if neccecary inside this function
+        SONARR_SERIES_ID (str or int): series id of sonarr show, will be converted from str to int if necessary inside this function
         seasonNum (str): sonarr season number of episode
     Returns:
-        totalSeasonEpisodes (_NULL_): total number of episodes in season; this is used to verify that the correct number of episodes is being changed before doing so will be converted to int by monitorEpisodes.py if nececery
+        totalSeasonEpisodes (_NULL_): total number of episodes in season; this is used to verify that the correct number of episodes is being changed before doing so will be converted to int by monitorEpisodes.py if necessary
     """
     # char vars to ensure they have been set
     check_vars(base_url, api_key, SONARR_SERIES_ID, season_num)

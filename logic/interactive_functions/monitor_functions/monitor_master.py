@@ -30,7 +30,7 @@ def main(base_url, api_key, SONARR_SERIES_ID, season_number,assumed_sonarr_seaso
 
     THESE WERE TURNED OFF on PURPOSE###########
 
-    this was turned off in order to protect from accidently downloading unwanted shows
+    this was turned off in order to protect from accidentally downloading unwanted shows
     # ensure series is monitored
     sonarr.edit_series(series, monitored=True)
     """
