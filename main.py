@@ -14,19 +14,19 @@ NOTE *** This should work fine if you enter an external URL in the boxes below b
  """
 
 import sys
-from config import initialConfigs
-from logic.general_small_logic_functions import user_select
-from logic.interactive_functions.plex_interactive import tryPlexUser
-from logic.outputs import (
+from src.configurations.config import initialConfigs
+from src.logic.general_small_logic_functions import user_select
+from src.logic.interactive_functions.plex_interactive import tryPlexUser
+from src.logic.outputs import (
     print_failed_to_access,
     print_script_started,
     print_finished_script,
     print_now_analyzing_user_library,
 )
-from settings_constants import settings, test_mode  # import settings
-from logic.interactive_functions.sonarr_interactive import fetchSonarrShows
-from logic.plex import plex_inital_details
-from logic.workhorse import main as workhorse
+from src.configurations.settings_constants import settings, test_mode  # import settings
+from src.logic.interactive_functions.sonarr_interactive import fetchSonarrShows
+from src.logic.plex import plex_inital_details
+from src.logic.workhorse import main as workhorse
 
 print_script_started()
 
