@@ -3,7 +3,7 @@ from settings_constants import printLine
 
 
 def assumed_season_number_finder(plex_current_season):
-    """find assummed season number from plex
+    """find assumed season number from plex
 
     Args:
         plex_current_season (json thingy): the current working season from plex
@@ -55,7 +55,7 @@ def user_select(all_accounts, all_index):
             print(i, ". ", item)
             i = i + 1
 
-        # request user seletion
+        # request user selection
         printLine()
         userInput = input(
             "Please Enter the Number Associated With the Account You Wish to Check: "

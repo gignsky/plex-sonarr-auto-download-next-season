@@ -24,13 +24,13 @@ def main(
         assumed_season_number + 1, sonarr_show
     )
 
-    # no next season per direction_finder might make code below unuseable
+    # no next season per direction_finder might make code below unusable
     if assumed_sonarr_season_number_KEY_2 == 99:
         print_no_next_season()
         status = "continue"
         return status
 
-    # check next season avaliability
+    # check next season availability
     try:
         sonarr_next_season = sonarr_show["seasons"][
             int(assumed_sonarr_season_number_KEY_2)
@@ -38,7 +38,7 @@ def main(
         print_found_next_season()
 
     except IndexError:
-        print_no_next_season()  # might be made unnececary by bit above this try except
+        print_no_next_season()  # might be made unnecessary by bit above this try except
         status = "continue"
         return status
 

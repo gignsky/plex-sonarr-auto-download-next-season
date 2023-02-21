@@ -1,7 +1,7 @@
 def settings():
     """General Settings Configuration
 
-    returns: varibles with general settings most of these will never be used with the exception of test-mode for debugging purposes
+    returns: variables with general settings most of these will never be used with the exception of test-mode for debugging purposes
     """
 
     # Currently Unused - Will be used come the logging update, placeholder variable for now
