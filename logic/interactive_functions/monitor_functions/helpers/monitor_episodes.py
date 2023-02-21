@@ -3,7 +3,7 @@
 import json
 import requests
 
-# default definitions as this file will be used as a supplimental file; these defininitions are only in place to remove the associated error:
+# default definitions as this file will be used as a supplemental file; these definitions are only in place to remove the associated error:
 base_url = ""
 api_key = ""
 SONARR_SERIES_ID = -1
@@ -18,7 +18,7 @@ def main(base_url, api_key, season_num, SONARR_SERIES_ID, total_season_episodes)
         base_url (str): url to sonarr
         api_key (str): api for sonarr
         seasonNum (str): sonarr season number of episode
-        SONARR_SERIES_ID (str or int): series id of sonarr show, will be conerted from str to int if neccecary inside this function
+        SONARR_SERIES_ID (str or int): series id of sonarr show, will be converted from str to int if necessary inside this function
         totalSeasonEpisodes (int): total number of episodes in season; this is used to verify that the correct number of episodes is being changed before doing so
     """
     # char vars to ensure they have been set
@@ -35,7 +35,7 @@ def main(base_url, api_key, season_num, SONARR_SERIES_ID, total_season_episodes)
     # load data with json object from getEpisodes
     data = json.loads(data_to_mod)
 
-    # loop for getting index's of data's list coresponding to the appropriate season
+    # loop for getting index's of data's list corresponding to the appropriate season
     episode_IDs = []  # initiate list
     for (
         i
@@ -46,7 +46,7 @@ def main(base_url, api_key, season_num, SONARR_SERIES_ID, total_season_episodes)
     # sort list
     sorted_IDs = sorted(episode_IDs)
 
-    # check legnth
+    # check length
     if total_season_episodes != len(episode_IDs):
         "You got a problem homie, there are more episode Id's in this here 'episodeIds' list, why don't you look at this manually"
 
@@ -88,7 +88,7 @@ def single_episode_path_finder(base_url, api_key, episode_ID):
 
 def check_vars(base_url, api_key, SONARR_SERIES_ID, season_num, total_season_episodes):
     """ENSURE VARS ARE INPUTTED CORRECTLY
-    Nothing Occurs if everythings checks out"""
+    Nothing Occurs if everything checks out"""
     if (
         base_url == ""
         or api_key == ""

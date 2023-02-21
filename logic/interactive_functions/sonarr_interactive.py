@@ -7,8 +7,8 @@ def fetchSonarrShows(SONARR_URL, SONARR_API_KEY):
     """Grabs all shows added to sonarr
 
     Args:
-        SONARR_URL (string): initally grabbed from config.py
-        SONARR_API_KEY (string): initally grabbed from config.py
+        SONARR_URL (string): initially grabbed from config.py
+        SONARR_API_KEY (string): initially grabbed from config.py
 
     Returns:
         sonarr_shows: json
@@ -73,7 +73,7 @@ def downloadNewEpisodes(
             assumed_sonarr_season_number_KEY
         )
 
-        # actully order sonarr to download items
+        # actually order sonarr to download items
         sonarr_command_result = sonarrDownloadOrder(
             SONARR_URL, SONARR_API_KEY, requestBody
         )

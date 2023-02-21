@@ -9,7 +9,7 @@ def plex_inital_details(PLEX_URL, PLEX_TOKEN):
     # grab all accounts on plex
     all_accounts = all_accounts_finder(plex)
 
-    # find all accounts legnth
+    # find all accounts length
     all_index = len(all_accounts)
 
     return (plex, account, all_accounts, all_index)
