@@ -1,4 +1,4 @@
-# Current Version: v0.5.6b
+# Current Version: v0.5.6c
 
 # CURRENT VERSION DETAILS:
     - unified script that combines the old versions into one single script with broken apart modules allowing for easier modification in the future
