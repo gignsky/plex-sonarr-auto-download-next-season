@@ -49,3 +49,11 @@ added time output to beginning of output for help with troubleshooting ref. issu
 # V0.5.6
 ## Bug Fix
 dependabot update: bump setuptools from 59.6.0 to 65.5.1
+
+# V0.5.6c
+## Dependency Update
+dependabot update: Bump astroid from 2.13.3 to 2.14.2 #98
+dependabot update: Bump pylint from 2.15.10 to 2.16.2
+dependabot update: Bump stevedore from 4.1.1 to 5.0.0
+dependabot update: Bump pathspec from 0.10.3 to 0.11.0
+dependabot update: Bump setuptools from 65.5.1 to 67.4.0
