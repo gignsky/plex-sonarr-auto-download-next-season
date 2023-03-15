@@ -57,3 +57,11 @@ dependabot update: Bump pylint from 2.15.10 to 2.16.2
 dependabot update: Bump stevedore from 4.1.1 to 5.0.0
 dependabot update: Bump pathspec from 0.10.3 to 0.11.0
 dependabot update: Bump setuptools from 65.5.1 to 67.4.0
+
+# V0.5.6d
+## Dependency Update
+dependabot update: Bump pylint from 2.16.2 to 2.17.0 #108
+dependabot update: Bump platformdirs from 2.6.2 to 3.1.1 #107
+dependabot update: Bump charset-normalizer from 3.0.1 to 3.1.0 #105
+dependabot update: Bump typing-extensions from 4.4.0 to 4.5.0 #104
+dependabot update: Bump black from 22.12.0 to 23.1.0 #103
