@@ -3,7 +3,7 @@ arrapi==1.4.2
     certifi==2023.7.22
     charset-normalizer==3.1.0
     idna==3.4
-    urllib3==1.26.14
+    urllib3==1.26.17
 bandit==1.7.4
   GitPython==3.1.30
     gitdb==4.0.10
@@ -26,7 +26,7 @@ PlexAPI==4.13.2
     certifi==2023.7.22
     charset-normalizer==3.1.0
     idna==3.4
-    urllib3==1.26.14
+    urllib3==1.26.17
 pylint==2.17.0
   astroid==2.14.2
     lazy-object-proxy==1.9.0
